@@ -39,7 +39,7 @@ const AdminSection = ({ feedbackData }: any) => {
             />
           </Fragment>
         ))} */}
-        {Array.from({ length: 10 }, (x, v) => (
+        {Array.from({ length: 10 }, (_x, v) => (
           <Fragment key={v}>
             <Card
               text="I can see you’re positively impacting your new office. People seem happy to have you on their team."

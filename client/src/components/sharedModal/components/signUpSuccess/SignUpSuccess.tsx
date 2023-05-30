@@ -10,8 +10,11 @@ interface I_Props {
   setSignUpSuccessModal(value: boolean): void;
 }
 const SignUpSuccess = ({ isLoading, setSignUpSuccessModal }: I_Props) => {
+  const handleCloseModal = () => {
+    setSignUpSuccessModal(false);
+  };
   return (
-    <SharedModal toggleModal={setSignUpSuccessModal} isLoading={isLoading}>
+    <SharedModal onClickClose={handleCloseModal} isLoading={isLoading}>
       <div>
         {isLoading ? (
           <ModalHeading>Loading...</ModalHeading>
