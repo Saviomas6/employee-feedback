@@ -1,7 +1,13 @@
 import Lottie from "react-lottie";
 import { OpacityAnimation } from "../../styles/sharedStyles";
 import homepage from "../../assets/homepage.json";
-import { LeftContainer, MainContainer, RightContainer } from "./style";
+import {
+  LeftContainer,
+  LeftContainerDescription,
+  LeftContainerHeading,
+  MainContainer,
+  RightContainer,
+} from "./style";
 
 const HomeSection = () => {
   const defaultErrorOptions = {
@@ -13,9 +19,14 @@ const HomeSection = () => {
     },
   };
   return (
-    <OpacityAnimation style={{ backgroundColor: "red" }}>
+    <OpacityAnimation>
       <MainContainer>
-        <LeftContainer>Left</LeftContainer>
+        <LeftContainer>
+          <LeftContainerHeading>Employee Feedback System</LeftContainerHeading>
+          <LeftContainerDescription>
+            Creating Ways for Employees to Share and Receive Feedback
+          </LeftContainerDescription>
+        </LeftContainer>
         <RightContainer>
           <Lottie options={defaultErrorOptions} />
         </RightContainer>

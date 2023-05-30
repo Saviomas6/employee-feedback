@@ -7,16 +7,16 @@ import {
 import { AiFillCloseCircle } from "react-icons/ai";
 interface I_Props {
   children: React.ReactNode;
-  toggleModal(value: boolean): void;
+  onClickClose(): void;
   isLoading?: boolean;
 }
-const SharedModal = ({ children, toggleModal, isLoading }: I_Props) => {
+const SharedModal = ({ children, onClickClose, isLoading }: I_Props) => {
   return (
     <SharedModalMainContainer>
       <SharedModalContainer>
         {children}
         {!isLoading && (
-          <CloseWrapper onClick={() => toggleModal(false)}>
+          <CloseWrapper onClick={onClickClose}>
             <AiFillCloseCircle size={25} />
           </CloseWrapper>
         )}

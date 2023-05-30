@@ -14,10 +14,15 @@ import rapid from "../../assets/rapid.svg";
 import SignInModal from "../sharedModal/components/signInModal/SignInModal";
 import SignUpModal from "../sharedModal/components/signUpModal/SignUpModal";
 import SignUpSuccess from "../sharedModal/components/signUpSuccess/SignUpSuccess";
+import { useAppDispatch, useAppSelector } from "../../logic/redux/store/hooks";
+import { setSignIn, setSignUp } from "../../logic/redux/action/action";
 
 const Navbar = () => {
-  const [isSignUpOpen, setSignUpOpen] = useState<boolean>(false);
-  const [isSignInOpen, setSignInOpen] = useState<boolean>(false);
+  const isSignUpOpen = useAppSelector((state) => state.userReducer.signUp);
+  const isSignInOpen = useAppSelector((state) => state.userReducer.signIn);
+
+  const dispatch = useAppDispatch();
+
   const [isSignUpSuccessOpen, setSignUpSuccessOpen] = useState<boolean>(false);
   const [isSignUpLoading, setIsSignUpLoading] = useState<boolean>(false);
 
@@ -28,7 +33,7 @@ const Navbar = () => {
           <LogoContainer>
             <img src={rapid} />
           </LogoContainer>
-          <NavbarContainer>Employee Feedback System</NavbarContainer>
+          <NavbarContainer>EF System</NavbarContainer>
         </LogoMainContainer>
       </StyledLink>
 
@@ -40,22 +45,21 @@ const Navbar = () => {
         <SignUpButton
           bgColor="transparent"
           borderColor="1px  solid #b269e8"
-          onClick={() => setSignInOpen(true)}
+          onClick={() => dispatch(setSignIn(true))}
         >
           SIGN IN
         </SignUpButton>
         <SignUpButton
           bgColor="#b269e8"
           borderColor="transparent"
-          onClick={() => setSignUpOpen(true)}
+          onClick={() => dispatch(setSignUp(true))}
         >
           REGISTER
         </SignUpButton>
       </SignUpButtonWrapper>
-      {isSignInOpen && <SignInModal setSignInOpen={setSignInOpen} />}
+      {isSignInOpen && <SignInModal />}
       {isSignUpOpen && (
         <SignUpModal
-          setSignUpOpen={setSignUpOpen}
           setIsSignUpLoading={setIsSignUpLoading}
           setSignUpSuccessModal={setSignUpSuccessOpen}
         />

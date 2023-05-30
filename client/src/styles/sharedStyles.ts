@@ -82,3 +82,15 @@ export const ErrorMessageText = styled.div`
   color: #ff0000;
   font-size: 16px;
 `;
+
+export const effect = keyframes`
+  0% {
+    color: #fff;
+  }
+  50%{
+    color: #b269e8;
+  }
+  100% {
+    color: #fff;
+  }
+`;

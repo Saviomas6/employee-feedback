@@ -10,6 +10,8 @@ import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Button from "../../../button/Button";
 import SharedModal from "../../SharedModal";
+import { useAppDispatch } from "../../../../logic/redux/store/hooks";
+import { setSignIn } from "../../../../logic/redux/action/action";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -18,10 +20,8 @@ const validationSchema = Yup.object().shape({
     .required("Password is required"),
 });
 
-interface I_Props {
-  setSignInOpen(value: boolean): void;
-}
-const SignInModal = ({ setSignInOpen }: I_Props) => {
+const SignInModal = () => {
+  const dispatch = useAppDispatch();
   const initialValues = {
     email: "",
     password: "",
@@ -31,8 +31,12 @@ const SignInModal = ({ setSignInOpen }: I_Props) => {
     console.log(values);
   };
 
+  const handleModalClose = () => {
+    dispatch(setSignIn(false));
+  };
+
   return (
-    <SharedModal toggleModal={setSignInOpen}>
+    <SharedModal onClickClose={handleModalClose}>
       <div>
         <ModalHeading>Sign In</ModalHeading>
         <Formik

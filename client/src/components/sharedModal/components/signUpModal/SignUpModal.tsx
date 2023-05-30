@@ -11,8 +11,11 @@ import {
 import Button from "../../../button/Button";
 import SharedModal from "../../SharedModal";
 import axios from "axios";
+
+import { setSignUp } from "../../../../logic/redux/action/action";
+import { useAppDispatch } from "../../../../logic/redux/store/hooks";
+
 interface I_Props {
-  setSignUpOpen(value: boolean): void;
   setIsSignUpLoading(value: boolean): void;
   setSignUpSuccessModal(value: boolean): void;
 }
@@ -29,10 +32,11 @@ const validationSchema = Yup.object().shape({
 });
 
 const SignUpModal = ({
-  setSignUpOpen,
   setIsSignUpLoading,
   setSignUpSuccessModal,
 }: I_Props) => {
+  const dispatch = useAppDispatch();
+
   const initialValues = {
     name: "",
     email: "",
@@ -44,7 +48,7 @@ const SignUpModal = ({
     try {
       setIsSignUpLoading(true);
       setSignUpSuccessModal(true);
-      setSignUpOpen(false);
+      dispatch(setSignUp(false));
       const result = await axios.post(
         "http://localhost:8081/user/signup",
         values
@@ -57,8 +61,12 @@ const SignUpModal = ({
     }
   };
 
+  const handleModalClose = () => {
+    dispatch(setSignUp(false));
+  };
+
   return (
-    <SharedModal toggleModal={setSignUpOpen}>
+    <SharedModal onClickClose={handleModalClose}>
       <div>
         <ModalHeading>Sign Up</ModalHeading>
         <Formik
