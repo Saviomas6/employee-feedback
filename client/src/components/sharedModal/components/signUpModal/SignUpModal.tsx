@@ -42,6 +42,7 @@ const SignUpModal = ({
     email: "",
     password: "",
     confirmPassword: "",
+    isAdmin: false,
   };
 
   const handleSubmitForm = async (values: any) => {

@@ -4,8 +4,10 @@ import {
   createEmployee,
   deleteEmployee,
   getEmployee,
+  getUserFeedback,
   homeRoute,
   updateEmployee,
+  userFeedback,
   userSignIn,
   userSignUp,
 } from "../controller/userController.js";
@@ -30,3 +32,9 @@ userRouter.post("/signin", userSignIn);
 
 //signup
 userRouter.post("/signup", userSignUp);
+
+//user-feedback
+userRouter.post("/user-feedback", userFeedback);
+
+//get-user-feedback
+userRouter.get("/user-feedback", getUserFeedback);

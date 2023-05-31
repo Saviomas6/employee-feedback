@@ -17,6 +17,7 @@ import { useState } from "react";
 import SuccessModal from "../../components/sharedModal/components/successModal/SuccessModal";
 import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
 
 const dropDown = [
   {
@@ -73,7 +74,7 @@ const UserSection = () => {
       setSuccessModal(true);
       setLoading(true);
       const llm = new OpenAI({
-        openAIApiKey: "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",
+        openAIApiKey: import.meta.env.VITE_API_KEY,
         temperature: 0.9,
       });
 
@@ -105,18 +106,21 @@ const UserSection = () => {
         : "Neutral";
 
       if (reviewData) {
-        setLoading(false);
-        resetForm();
-        // setFeedbackData([
-        //   ...feedbackData,
-        //   {
-        //     inputValue,
-        //     reviewData,
-        //     inputName,
-        //     isDataSelected,
-        //   },
-        // ]);
-        setDataSelected("Business Analyst");
+        const data = {
+          name: values.name,
+          department: isDataSelected,
+          comments: values.comments,
+          review: reviewData,
+        };
+        const result = await axios.post(
+          "http://localhost:8081/user/user-feedback",
+          data
+        );
+        if (result?.data?.message) {
+          setLoading(false);
+          resetForm();
+          setDataSelected("Business Analyst");
+        }
       }
     } catch (error: any) {
       console.error("Error analyzing code quality:", error.message);

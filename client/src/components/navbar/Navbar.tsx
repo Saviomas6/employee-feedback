@@ -9,7 +9,7 @@ import {
   NavTabs,
   NavTab,
   StyledLink,
-  // ProfilePicContainer,
+  ProfilePicContainer,
   LogoLayout,
 } from "./style";
 import rapid from "../../assets/rapid.svg";
@@ -18,7 +18,7 @@ import SignUpModal from "../sharedModal/components/signUpModal/SignUpModal";
 import SignUpSuccess from "../sharedModal/components/signUpSuccess/SignUpSuccess";
 import { useAppDispatch, useAppSelector } from "../../logic/redux/store/hooks";
 
-// import { RxAvatar } from "react-icons/rx";
+import { RxAvatar } from "react-icons/rx";
 import LogoutModal from "../sharedModal/components/logoutModal/LogoutModal";
 import { setSignIn, setSignUp } from "../../logic/redux/action/action";
 const Navbar = () => {
@@ -63,9 +63,9 @@ const Navbar = () => {
         >
           REGISTER
         </SignUpButton>
-        {/* <ProfilePicContainer onClick={() => setLogoutModalOpen(true)}>
+        <ProfilePicContainer onClick={() => setLogoutModalOpen(true)}>
           <RxAvatar size="30" color="#fff" />
-        </ProfilePicContainer> */}
+        </ProfilePicContainer>
       </SignUpButtonWrapper>
       {isSignInOpen && <SignInModal />}
       {isSignUpOpen && (

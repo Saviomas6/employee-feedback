@@ -1,5 +1,5 @@
 import { Employee } from "../model/employee.js";
-import { UserSignUp } from "../model/user.js";
+import { UserFeedbackForm, UserSignUp } from "../model/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -78,7 +78,7 @@ export const userSignIn = async (req, res) => {
 };
 
 export const userSignUp = async (req, res) => {
-  const { name, email, password, confirmPassword } = req.body;
+  const { name, email, password, confirmPassword, isAdmin } = req.body;
   try {
     const existUser = await UserSignUp.findOne({ email });
     if (existUser) {
@@ -92,6 +92,7 @@ export const userSignUp = async (req, res) => {
       email,
       password: hashPassword,
       confirmPassword: confirmHashPassword,
+      isAdmin: isAdmin,
     });
     result
       .save()
@@ -100,5 +101,27 @@ export const userSignUp = async (req, res) => {
   } catch (e) {
     console.log(e);
     res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+export const userFeedback = async (req, res) => {
+  try {
+    const data = req.body;
+    const userFeedback = new UserFeedbackForm(data);
+    userFeedback
+      .save()
+      .then(() => res.status(201).send({ user: userFeedback, message: true }))
+      .catch((e) => res.status(400).send(e));
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const getUserFeedback = async (req, res) => {
+  try {
+    const userFeedback = await UserFeedbackForm.find({}, { __v: 0 });
+    res.send(userFeedback);
+  } catch (e) {
+    console.log(e);
   }
 };

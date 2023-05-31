@@ -22,6 +22,33 @@ const userSignUpSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  isAdmin: {
+    type: Boolean,
+    required: true,
+  },
+});
+
+const userFeedBackSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  department: {
+    type: String,
+    required: true,
+  },
+  comments: {
+    type: String,
+    required: true,
+  },
+  review: {
+    type: String,
+    required: true,
+  },
 });
 
 export const UserSignUp = mongoose.model("User", userSignUpSchema);
+export const UserFeedbackForm = mongoose.model(
+  "UserFeedback",
+  userFeedBackSchema
+);
