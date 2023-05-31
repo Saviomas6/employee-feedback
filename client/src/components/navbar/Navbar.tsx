@@ -9,14 +9,18 @@ import {
   NavTabs,
   NavTab,
   StyledLink,
+  // ProfilePicContainer,
+  LogoLayout,
 } from "./style";
 import rapid from "../../assets/rapid.svg";
 import SignInModal from "../sharedModal/components/signInModal/SignInModal";
 import SignUpModal from "../sharedModal/components/signUpModal/SignUpModal";
 import SignUpSuccess from "../sharedModal/components/signUpSuccess/SignUpSuccess";
 import { useAppDispatch, useAppSelector } from "../../logic/redux/store/hooks";
-import { setSignIn, setSignUp } from "../../logic/redux/action/action";
 
+// import { RxAvatar } from "react-icons/rx";
+import LogoutModal from "../sharedModal/components/logoutModal/LogoutModal";
+import { setSignIn, setSignUp } from "../../logic/redux/action/action";
 const Navbar = () => {
   const isSignUpOpen = useAppSelector((state) => state.userReducer.signUp);
   const isSignInOpen = useAppSelector((state) => state.userReducer.signIn);
@@ -25,22 +29,25 @@ const Navbar = () => {
 
   const [isSignUpSuccessOpen, setSignUpSuccessOpen] = useState<boolean>(false);
   const [isSignUpLoading, setIsSignUpLoading] = useState<boolean>(false);
+  const [isLogoutModalOpen, setLogoutModalOpen] = useState<boolean>(false);
 
   return (
     <NavbarMainContainer>
       <StyledLink to={"/"}>
-        <LogoMainContainer>
-          <LogoContainer>
-            <img src={rapid} />
-          </LogoContainer>
-          <NavbarContainer>EF System</NavbarContainer>
-        </LogoMainContainer>
+        <LogoLayout>
+          <LogoMainContainer>
+            <LogoContainer>
+              <img src={rapid} />
+            </LogoContainer>
+            <NavbarContainer>EF System</NavbarContainer>
+          </LogoMainContainer>
+          <NavTabs>
+            <NavTab to={"/user"}>User</NavTab>
+            <NavTab to={"/admin"}>Admin</NavTab>
+          </NavTabs>
+        </LogoLayout>
       </StyledLink>
 
-      <NavTabs>
-        <NavTab to={"/user"}>User</NavTab>
-        <NavTab to={"/admin"}>Admin</NavTab>
-      </NavTabs>
       <SignUpButtonWrapper>
         <SignUpButton
           bgColor="transparent"
@@ -56,6 +63,9 @@ const Navbar = () => {
         >
           REGISTER
         </SignUpButton>
+        {/* <ProfilePicContainer onClick={() => setLogoutModalOpen(true)}>
+          <RxAvatar size="30" color="#fff" />
+        </ProfilePicContainer> */}
       </SignUpButtonWrapper>
       {isSignInOpen && <SignInModal />}
       {isSignUpOpen && (
@@ -70,6 +80,9 @@ const Navbar = () => {
           setSignUpSuccessModal={setSignUpSuccessOpen}
           isLoading={isSignUpLoading}
         />
+      )}
+      {isLogoutModalOpen && (
+        <LogoutModal setLogoutModalClose={setLogoutModalOpen} />
       )}
     </NavbarMainContainer>
   );

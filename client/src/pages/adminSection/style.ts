@@ -20,3 +20,14 @@ export const Heading = styled.h1`
   border-radius: 10px;
   text-align: center;
 `;
+
+export const ChartMainContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const ChartContainer = styled.div`
+  width: 350px;
+  height: 350px;
+`;

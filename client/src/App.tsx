@@ -1,10 +1,12 @@
 import RoutePath from "./routes/RoutePath";
-import { Container } from "./styles/sharedStyles";
+import { Container, OpacityAnimation } from "./styles/sharedStyles";
 
 const App = () => {
   return (
     <Container width="90%">
-      <RoutePath />
+      <OpacityAnimation>
+        <RoutePath />
+      </OpacityAnimation>
     </Container>
   );
 };

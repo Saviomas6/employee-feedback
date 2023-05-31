@@ -68,5 +68,22 @@ export const NavTab = styled(Link)`
 
 export const StyledLink = styled(Link)`
   text-decoration: none;
+`;
+
+export const ProfilePicContainer = styled.div`
+  height: 46px;
+  width: 46px;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   cursor: pointer;
+  background-color: #b269e8;
+`;
+
+export const LogoLayout = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 30px;
 `;

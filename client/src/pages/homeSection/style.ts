@@ -3,7 +3,7 @@ import { effect } from "../../styles/sharedStyles";
 
 export const MainContainer = styled.div`
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   padding: 20px 0;
 `;
 export const LeftContainer = styled.div`
@@ -16,7 +16,7 @@ export const LeftContainerHeading = styled.div`
   font-size: 70px;
   font-weight: 700;
   color: #fff;
-  animation: ${effect} 3s linear infinite;
+  animation: ${effect} 5s linear infinite;
 `;
 
 export const LeftContainerDescription = styled.div`

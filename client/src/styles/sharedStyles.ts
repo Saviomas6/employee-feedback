@@ -90,7 +90,7 @@ export const effect = keyframes`
   50%{
     color: #b269e8;
   }
-  100% {
+  100%{
     color: #fff;
   }
 `;
