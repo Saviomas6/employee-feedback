@@ -1,0 +1,6 @@
+export const apiEndPoints = {
+  userFeedbackTopic: "/user/user-feedback-topic",
+  userFeedbackById: "/user/user-feedback/",
+  userFeedback: "/user/user-feedback",
+  signUp: "/user/signup",
+};

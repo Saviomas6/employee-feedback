@@ -1,5 +1,8 @@
 export enum Paths {
   home = "/",
   user = "/user",
-  admin = "/admin",
+  feedbackTopic = "/feedbackTopic",
+  feedbackTopicById = "/feedbackTopic/:id",
+  adminTopic = "/adminTopic",
+  adminTopicById = "/adminTopic/:id",
 }

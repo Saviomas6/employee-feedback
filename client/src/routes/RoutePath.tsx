@@ -1,10 +1,14 @@
 import { Routes, Route } from "react-router-dom";
-import NotFound from "./NotFound";
+
 import { Paths } from "./path";
 import Navbar from "../components/navbar/Navbar";
 import Home from "../pages/homeSection/HomeSection";
 import UserSection from "../pages/userSection/UserSection";
 import AdminSection from "../pages/adminSection/AdminSection";
+import Footer from "../components/footer/Footer";
+import FeedBackTopic from "../pages/feedbackTopic/FeedBackTopic";
+import AdminTopicSection from "../pages/adminTopicSection/AdminTopicSection";
+import NotFound from "../components/notFound/NotFound";
 
 // const getRouteRenderWithAuth = (route: RouteDefinition, i: number) => {
 //   return () => <route.component />;
@@ -33,16 +37,28 @@ export const routes: RouteDefinition[] = [
     title: "Home",
   },
   {
-    path: Paths.user,
+    path: Paths.feedbackTopicById,
     component: UserSection,
     protected: false,
-    title: "User",
+    title: "User Feedback",
   },
   {
-    path: Paths.admin,
+    path: Paths.feedbackTopic,
+    component: FeedBackTopic,
+    protected: false,
+    title: "Feedback Topic",
+  },
+  {
+    path: Paths.adminTopic,
+    component: AdminTopicSection,
+    protected: false,
+    title: "Admin Topic",
+  },
+  {
+    path: Paths.adminTopicById,
     component: AdminSection,
     protected: false,
-    title: "Admin",
+    title: "Admin Topic",
   },
 ].concat(NotFoundRoute as any);
 
@@ -60,6 +76,7 @@ const RoutePath = () => {
           );
         })}
       </Routes>
+      <Footer />
     </div>
   );
 };

@@ -1,5 +1,9 @@
 import { Employee } from "../model/employee.js";
-import { UserFeedbackForm, UserSignUp } from "../model/user.js";
+import {
+  UserFeedbackForm,
+  UserFeedbackTopicForm,
+  UserSignUp,
+} from "../model/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -119,8 +123,35 @@ export const userFeedback = async (req, res) => {
 
 export const getUserFeedback = async (req, res) => {
   try {
-    const userFeedback = await UserFeedbackForm.find({}, { __v: 0 });
+    const userFeedback = await UserFeedbackForm.find(
+      { topic: req.params.id },
+      { __v: 0 }
+    );
     res.send(userFeedback);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const userFeedbackTopic = async (req, res) => {
+  try {
+    const data = req.body;
+    const userFeedbackTopic = new UserFeedbackTopicForm(data);
+    userFeedbackTopic
+      .save()
+      .then(() =>
+        res.status(201).send({ user: userFeedbackTopic, message: true })
+      )
+      .catch((e) => res.status(400).send(e));
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const getUserFeedbackTopic = async (req, res) => {
+  try {
+    const userFeedbackTopic = await UserFeedbackTopicForm.find({}, { __v: 0 });
+    res.send(userFeedbackTopic);
   } catch (e) {
     console.log(e);
   }

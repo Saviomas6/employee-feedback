@@ -1,7 +1,17 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+export const NavbarLayout = styled.div`
+  background-color: #13131d;
+  height: 90px;
+  width: 100%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 100;
+`;
+
 export const NavbarMainContainer = styled.div`
-  padding: 30px 0px;
+  height: 90px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -61,7 +71,7 @@ export const NavTabs = styled.div`
 `;
 export const NavTab = styled(Link)`
   text-decoration: none;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   color: #fff;
 `;

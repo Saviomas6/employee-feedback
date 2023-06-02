@@ -5,9 +5,11 @@ import {
   deleteEmployee,
   getEmployee,
   getUserFeedback,
+  getUserFeedbackTopic,
   homeRoute,
   updateEmployee,
   userFeedback,
+  userFeedbackTopic,
   userSignIn,
   userSignUp,
 } from "../controller/userController.js";
@@ -37,4 +39,10 @@ userRouter.post("/signup", userSignUp);
 userRouter.post("/user-feedback", userFeedback);
 
 //get-user-feedback
-userRouter.get("/user-feedback", getUserFeedback);
+userRouter.get("/user-feedback/:id", getUserFeedback);
+
+//create-user-feedback-topic
+userRouter.post("/user-feedback-topic", userFeedbackTopic);
+
+//get-user-feedback-topic
+userRouter.get("/user-feedback-topic", getUserFeedbackTopic);

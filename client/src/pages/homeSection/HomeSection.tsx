@@ -1,5 +1,9 @@
 import Lottie from "react-lottie";
-import { OpacityAnimation } from "../../styles/sharedStyles";
+import {
+  Container,
+  OpacityAnimation,
+  Wrapper,
+} from "../../styles/sharedStyles";
 import homepage from "../../assets/homepage.json";
 import {
   LeftContainer,
@@ -20,17 +24,23 @@ const HomeSection = () => {
   };
   return (
     <OpacityAnimation>
-      <MainContainer>
-        <LeftContainer>
-          <LeftContainerHeading>Employee Feedback System</LeftContainerHeading>
-          <LeftContainerDescription>
-            Creating Ways for Employees to Share and Receive Feedback
-          </LeftContainerDescription>
-        </LeftContainer>
-        <RightContainer>
-          <Lottie options={defaultErrorOptions} />
-        </RightContainer>
-      </MainContainer>
+      <Container>
+        <Wrapper>
+          <MainContainer>
+            <LeftContainer>
+              <LeftContainerHeading>
+                Employee Feedback System
+              </LeftContainerHeading>
+              <LeftContainerDescription>
+                Creating Ways for Employees to Share and Receive Feedback
+              </LeftContainerDescription>
+            </LeftContainer>
+            <RightContainer>
+              <Lottie options={defaultErrorOptions} />
+            </RightContainer>
+          </MainContainer>
+        </Wrapper>
+      </Container>
     </OpacityAnimation>
   );
 };

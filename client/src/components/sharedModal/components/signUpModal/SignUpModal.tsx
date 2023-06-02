@@ -10,10 +10,9 @@ import {
 } from "../../../../styles/sharedStyles";
 import Button from "../../../button/Button";
 import SharedModal from "../../SharedModal";
-import axios from "axios";
-
 import { setSignUp } from "../../../../logic/redux/action/action";
 import { useAppDispatch } from "../../../../logic/redux/store/hooks";
+import { useSignUpFormMutation } from "../../../../logic/reactQuery/mutation/useSignUpForm";
 
 interface I_Props {
   setIsSignUpLoading(value: boolean): void;
@@ -36,7 +35,7 @@ const SignUpModal = ({
   setSignUpSuccessModal,
 }: I_Props) => {
   const dispatch = useAppDispatch();
-
+  const { mutateAsync: createSignUpForm } = useSignUpFormMutation();
   const initialValues = {
     name: "",
     email: "",
@@ -50,10 +49,7 @@ const SignUpModal = ({
       setIsSignUpLoading(true);
       setSignUpSuccessModal(true);
       dispatch(setSignUp(false));
-      const result = await axios.post(
-        "http://localhost:8081/user/signup",
-        values
-      );
+      const result = await createSignUpForm(values);
       if (result?.data?.message) {
         setIsSignUpLoading(false);
       }

@@ -5,6 +5,7 @@ import {
   ModalHeading,
 } from "../../../../styles/sharedStyles";
 import Button from "../../../button/Button";
+import MiniLoader from "../../../miniLoader/MiniLoader";
 interface I_Props {
   isLoading: boolean;
   setSignUpSuccessModal(value: boolean): void;
@@ -17,7 +18,7 @@ const SignUpSuccess = ({ isLoading, setSignUpSuccessModal }: I_Props) => {
     <SharedModal onClickClose={handleCloseModal} isLoading={isLoading}>
       <div>
         {isLoading ? (
-          <ModalHeading>Loading...</ModalHeading>
+          <MiniLoader />
         ) : (
           <>
             <ModalHeading>Success</ModalHeading>

@@ -1,9 +1,11 @@
 import { styled } from "styled-components";
-import notFound from "../assets/notFound.json";
+import notFound from "../../assets/notFound.json";
 import Lottie from "react-lottie";
-import Button from "../components/button/Button";
+
 import { useNavigate } from "react-router-dom";
-import { OpacityAnimation } from "../styles/sharedStyles";
+import { OpacityAnimation } from "../../styles/sharedStyles";
+import Button from "../button/Button";
+
 const NotFound = () => {
   const navigate = useNavigate();
   const defaultErrorOptions = {

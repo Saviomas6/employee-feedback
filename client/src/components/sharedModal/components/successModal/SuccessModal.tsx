@@ -5,11 +5,19 @@ import {
   ModalHeading,
 } from "../../../../styles/sharedStyles";
 import Button from "../../../button/Button";
+import MiniLoader from "../../../miniLoader/MiniLoader";
 interface I_Props {
   isLoading: boolean;
   setSuccessModal(value: boolean): void;
+  heading: string;
+  description: string;
 }
-const SuccessModal = ({ isLoading, setSuccessModal }: I_Props) => {
+const SuccessModal = ({
+  isLoading,
+  setSuccessModal,
+  heading,
+  description,
+}: I_Props) => {
   const handleCloseModal = () => {
     setSuccessModal(false);
   };
@@ -17,14 +25,11 @@ const SuccessModal = ({ isLoading, setSuccessModal }: I_Props) => {
     <SharedModal isLoading={isLoading} onClickClose={handleCloseModal}>
       <div>
         {isLoading ? (
-          <ModalHeading>Loading...</ModalHeading>
+          <MiniLoader />
         ) : (
           <>
-            <ModalHeading>Success</ModalHeading>
-            <ModalDescription>
-              Thank you for taking time to provide feedback. We appreciate
-              hearing from you and will review your comments carefully.
-            </ModalDescription>
+            <ModalHeading>{heading}</ModalHeading>
+            <ModalDescription>{description}</ModalDescription>
             <ModalButtonWrapper>
               <Button text="Close" onClick={() => setSuccessModal(false)} />
             </ModalButtonWrapper>

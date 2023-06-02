@@ -1,4 +1,9 @@
-import { ErrorMessageText, OpacityAnimation } from "../../styles/sharedStyles";
+import {
+  Container,
+  ErrorMessageText,
+  OpacityAnimation,
+  Wrapper,
+} from "../../styles/sharedStyles";
 import {
   HeadingText,
   InputField,
@@ -17,7 +22,8 @@ import { useState } from "react";
 import SuccessModal from "../../components/sharedModal/components/successModal/SuccessModal";
 import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
+import { useParams } from "react-router-dom";
+import { useCreateFeedbackFormMutation } from "../../logic/reactQuery/mutation/useCreateFeedbackForm";
 
 const dropDown = [
   {
@@ -58,6 +64,8 @@ const dropDown = [
 ];
 
 const UserSection = () => {
+  const { id } = useParams();
+  const { mutateAsync: createFeedbackForm } = useCreateFeedbackFormMutation();
   const [isDropDownOpen, setDropDownOpen] = useState<boolean>(false);
   const [isDataSelected, setDataSelected] =
     useState<string>("Business Analyst");
@@ -71,8 +79,8 @@ const UserSection = () => {
 
   const handleSubmitForm = async (values: any, { resetForm }: any) => {
     try {
-      setSuccessModal(true);
       setLoading(true);
+      setSuccessModal(true);
       const llm = new OpenAI({
         openAIApiKey: import.meta.env.VITE_API_KEY,
         temperature: 0.9,
@@ -111,11 +119,9 @@ const UserSection = () => {
           department: isDataSelected,
           comments: values.comments,
           review: reviewData,
+          topic: id,
         };
-        const result = await axios.post(
-          "http://localhost:8081/user/user-feedback",
-          data
-        );
+        const result = await createFeedbackForm(data);
         if (result?.data?.message) {
           setLoading(false);
           resetForm();
@@ -134,57 +140,67 @@ const UserSection = () => {
   });
 
   return (
-    <OpacityAnimation>
-      <UserSectionMainContainer>
-        <HeadingText>Employee Feedback Form</HeadingText>
-        <Formik
-          onSubmit={handleSubmitForm}
-          initialValues={initialValue}
-          validationSchema={validationSchema}
-        >
-          <Form>
-            <InputFieldWrapper>
-              <InputField
-                type="text"
-                placeholder="Please enter your name"
-                name="name"
-              />
-              <ErrorMessageText>
-                <ErrorMessage name="name" />
-              </ErrorMessageText>
-            </InputFieldWrapper>
+    <Container>
+      <Wrapper>
+        <OpacityAnimation>
+          <UserSectionMainContainer>
+            <HeadingText>Employee Feedback Form</HeadingText>
+            <Formik
+              onSubmit={handleSubmitForm}
+              initialValues={initialValue}
+              validationSchema={validationSchema}
+            >
+              <Form>
+                <InputFieldWrapper>
+                  <InputField
+                    type="text"
+                    placeholder="Please enter your name"
+                    name="name"
+                  />
+                  <ErrorMessageText>
+                    <ErrorMessage name="name" />
+                  </ErrorMessageText>
+                </InputFieldWrapper>
 
-            <FilterDropDown
-              isDataSelected={isDataSelected}
-              setDataSelected={setDataSelected}
-              filterData={dropDown}
-              isDropDownOpen={isDropDownOpen}
-              setDropDownOpen={setDropDownOpen}
+                <FilterDropDown
+                  isDataSelected={isDataSelected}
+                  setDataSelected={setDataSelected}
+                  filterData={dropDown}
+                  isDropDownOpen={isDropDownOpen}
+                  setDropDownOpen={setDropDownOpen}
+                />
+
+                <ErrorMessageText>
+                  <ErrorMessage name="department" />
+                </ErrorMessageText>
+                <TextAreaContainer>
+                  <TextAreaField
+                    component="textarea"
+                    placeholder="Please enter your feedback"
+                    name="comments"
+                  />
+                  <ErrorMessageText>
+                    <ErrorMessage name="comments" />
+                  </ErrorMessageText>
+                </TextAreaContainer>
+                <UserSectionButtonWrapper>
+                  <Button text="Submit" type="submit" />
+                </UserSectionButtonWrapper>
+              </Form>
+            </Formik>
+          </UserSectionMainContainer>
+          {isSuccessModal && (
+            <SuccessModal
+              isLoading={isLoading}
+              setSuccessModal={setSuccessModal}
+              heading="Success"
+              description="   Thank you for taking time to provide feedback. We appreciate
+              hearing from you and will review your comments carefully."
             />
-
-            <ErrorMessageText>
-              <ErrorMessage name="department" />
-            </ErrorMessageText>
-            <TextAreaContainer>
-              <TextAreaField
-                component="textarea"
-                placeholder="Please enter your feedback"
-                name="comments"
-              />
-              <ErrorMessageText>
-                <ErrorMessage name="comments" />
-              </ErrorMessageText>
-            </TextAreaContainer>
-            <UserSectionButtonWrapper>
-              <Button text="Submit" type="submit" />
-            </UserSectionButtonWrapper>
-          </Form>
-        </Formik>
-      </UserSectionMainContainer>
-      {isSuccessModal && (
-        <SuccessModal isLoading={isLoading} setSuccessModal={setSuccessModal} />
-      )}
-    </OpacityAnimation>
+          )}
+        </OpacityAnimation>
+      </Wrapper>
+    </Container>
   );
 };
 
