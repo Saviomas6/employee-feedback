@@ -1,7 +1,10 @@
 import Lottie from "react-lottie";
 import loading from "../../assets/loading.json";
 import { LoadingSpinnerContainer, LoadingSpinnerMainContainer } from "./style";
-const LoadingSpinner = () => {
+interface I_Props {
+  height?: string;
+}
+const LoadingSpinner = ({ height }: I_Props) => {
   const defaultErrorOptions = {
     loop: true,
     autoplay: true,
@@ -11,7 +14,7 @@ const LoadingSpinner = () => {
     },
   };
   return (
-    <LoadingSpinnerMainContainer>
+    <LoadingSpinnerMainContainer height={height}>
       <LoadingSpinnerContainer>
         <Lottie options={defaultErrorOptions} />
       </LoadingSpinnerContainer>

@@ -69,11 +69,13 @@ export const NavTabs = styled.div`
   align-items: center;
   gap: 40px;
 `;
-export const NavTab = styled(Link)`
+export const NavTab = styled(Link)<{ pathTab: boolean }>`
   text-decoration: none;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 500;
   color: #fff;
+  padding: 5px 0;
+  border-bottom: ${({ pathTab }) => (pathTab ? "2px solid #b269e8" : "none")};
 `;
 
 export const StyledLink = styled(Link)`

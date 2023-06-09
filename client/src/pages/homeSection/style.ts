@@ -28,3 +28,18 @@ export const RightContainer = styled.div`
   height: 600px;
   width: 600px;
 `;
+
+export const HomepageCardHeading = styled.div`
+  text-align: center;
+  font-size: 40px;
+  font-weight: 600;
+  margin: 10px 0;
+  color: #fff;
+`;
+
+export const HomepageCardContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  margin: 30px 0;
+  grid-gap: 30px;
+`;

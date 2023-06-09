@@ -22,4 +22,5 @@ export const ProfileName = styled.div`
   font-size: 18px;
   color: #fff;
   text-align: center;
+  margin: 6px 0;
 `;

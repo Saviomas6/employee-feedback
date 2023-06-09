@@ -1,17 +1,24 @@
+import { useState } from "react";
 import {
+  AlreadyUser,
   ErrorMessageText,
   InputField,
   InputFieldWrapper,
   InputLabel,
   ModalButtonWrapper,
   ModalHeading,
-} from "../../../../styles/sharedStyles";
+  StyledLink,
+} from "../../styles/sharedStyles";
 import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import Button from "../../../button/Button";
-import SharedModal from "../../SharedModal";
-import { useAppDispatch } from "../../../../logic/redux/store/hooks";
-import { setSignIn } from "../../../../logic/redux/action/action";
+import { useAppDispatch } from "../../logic/redux/store/hooks";
+import { useSignInFormMutation } from "../../logic/reactQuery/mutation/useSignInForm";
+import { setLoggedDetail, setLoggedIn } from "../../logic/redux/action/action";
+import { decodeToken } from "../../utils/utils";
+import Button from "../../components/button/Button";
+import SharedModal from "../../components/sharedModal/SharedModal";
+import { useNavigate } from "react-router-dom";
+import { Paths } from "../../routes/path";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -20,21 +27,40 @@ const validationSchema = Yup.object().shape({
     .required("Password is required"),
 });
 
-const SignInModal = () => {
+const SignIn = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [isSignInLoading, setIsSignInLoading] = useState<boolean>(false);
+  const { mutateAsync: createSignInForm, isLoading } = useSignInFormMutation();
   const initialValues = {
     email: "",
     password: "",
   };
 
   const handleSubmitForm = async (values: any) => {
-    console.log(values);
+    setIsSignInLoading(true);
+    const result = await createSignInForm(values);
+    if (result?.data?.message) {
+      setIsSignInLoading(false);
+      localStorage.setItem("token", result?.data?.token);
+      const decoded: any = decodeToken(result?.data?.token);
+      localStorage.setItem("expirationTime", decoded?.expirationTime);
+      dispatch(setLoggedIn(true));
+      dispatch(
+        setLoggedDetail([
+          {
+            name: decoded?.decodedToken?.name,
+            email: decoded?.decodedToken?.email,
+          },
+        ])
+      );
+      navigate(Paths.home);
+    }
   };
 
   const handleModalClose = () => {
-    dispatch(setSignIn(false));
+    navigate(Paths.home);
   };
-
   return (
     <SharedModal onClickClose={handleModalClose}>
       <div>
@@ -69,9 +95,19 @@ const SignInModal = () => {
             <ErrorMessageText>
               <ErrorMessage name="password" />
             </ErrorMessageText>
-
+            <AlreadyUser>
+              Don't have an account?
+              <StyledLink to={Paths.signUp}>
+                <span> Create</span>
+              </StyledLink>
+            </AlreadyUser>
             <ModalButtonWrapper>
-              <Button type="submit" text="Sign In" />
+              <Button
+                type="submit"
+                isLoading={isLoading}
+                disabled={isLoading}
+                text="Sign In"
+              />
             </ModalButtonWrapper>
           </Form>
         </Formik>
@@ -80,4 +116,4 @@ const SignInModal = () => {
   );
 };
 
-export default SignInModal;
+export default SignIn;

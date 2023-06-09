@@ -3,4 +3,6 @@ export const apiEndPoints = {
   userFeedbackById: "/user/user-feedback/",
   userFeedback: "/user/user-feedback",
   signUp: "/user/signup",
+  signIn: "/user/signin",
+  userDetails: "/user/userDetails",
 };

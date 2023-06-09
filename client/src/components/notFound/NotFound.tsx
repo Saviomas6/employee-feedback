@@ -42,6 +42,7 @@ const NotFoundImageMainContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 80px;
 `;
 const NotFoundImageContainer = styled.div`
   height: 350px;

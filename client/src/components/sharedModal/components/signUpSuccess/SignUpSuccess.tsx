@@ -6,13 +6,15 @@ import {
 } from "../../../../styles/sharedStyles";
 import Button from "../../../button/Button";
 import MiniLoader from "../../../miniLoader/MiniLoader";
+import { useNavigate } from "react-router-dom";
+import { Paths } from "../../../../routes/path";
 interface I_Props {
   isLoading: boolean;
-  setSignUpSuccessModal(value: boolean): void;
 }
-const SignUpSuccess = ({ isLoading, setSignUpSuccessModal }: I_Props) => {
+const SignUpSuccess = ({ isLoading }: I_Props) => {
+  const navigate = useNavigate();
   const handleCloseModal = () => {
-    setSignUpSuccessModal(false);
+    navigate(Paths.home);
   };
   return (
     <SharedModal onClickClose={handleCloseModal} isLoading={isLoading}>
@@ -26,10 +28,7 @@ const SignUpSuccess = ({ isLoading, setSignUpSuccessModal }: I_Props) => {
               Congratulations, your account has been successfully created
             </ModalDescription>
             <ModalButtonWrapper>
-              <Button
-                text="Close"
-                onClick={() => setSignUpSuccessModal(false)}
-              />
+              <Button text="Close" onClick={() => navigate(Paths.home)} />
             </ModalButtonWrapper>
           </>
         )}

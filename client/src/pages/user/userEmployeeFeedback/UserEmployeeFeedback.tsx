@@ -3,7 +3,7 @@ import {
   ErrorMessageText,
   OpacityAnimation,
   Wrapper,
-} from "../../styles/sharedStyles";
+} from "../../../styles/sharedStyles";
 import {
   HeadingText,
   InputField,
@@ -16,14 +16,15 @@ import {
 import { OpenAI } from "langchain/llms/openai";
 import { PromptTemplate } from "langchain/prompts";
 import { LLMChain } from "langchain/chains";
-import Button from "../../components/button/Button";
-import FilterDropDown from "../../components/dropDown/FilterDropDown";
+import Button from "../../../components/button/Button";
+import FilterDropDown from "../../../components/dropDown/FilterDropDown";
 import { useState } from "react";
-import SuccessModal from "../../components/sharedModal/components/successModal/SuccessModal";
+import SuccessModal from "../../../components/sharedModal/components/successModal/SuccessModal";
 import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useParams } from "react-router-dom";
-import { useCreateFeedbackFormMutation } from "../../logic/reactQuery/mutation/useCreateFeedbackForm";
+import { useNavigate, useParams } from "react-router-dom";
+import { useCreateFeedbackFormMutation } from "../../../logic/reactQuery/mutation/useCreateFeedbackForm";
+import { Paths } from "../../../routes/path";
 
 const dropDown = [
   {
@@ -63,7 +64,8 @@ const dropDown = [
   },
 ];
 
-const UserSection = () => {
+const UserEmployeeFeedback = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const { mutateAsync: createFeedbackForm } = useCreateFeedbackFormMutation();
   const [isDropDownOpen, setDropDownOpen] = useState<boolean>(false);
@@ -89,11 +91,11 @@ const UserSection = () => {
       const template = new PromptTemplate({
         inputVariables: ["feedback"],
         template: `Categorize the sentiment of the following employee feedback as positive, negative, or neutral: ${values.comments}
-        Categorize the sentiment as:
-        - Positive: if the feedback expresses positive sentiment, appreciation, or encouragement.
-        - Negative: if the feedback expresses negative sentiment, criticism, or dissatisfaction.
-        - Neutral: if the feedback does not lean towards either positive or negative sentiment and remains objective.
-                  `,
+          Categorize the sentiment as:
+          - Positive: if the feedback expresses positive sentiment, appreciation, or encouragement.
+          - Negative: if the feedback expresses negative sentiment, criticism, or dissatisfaction.
+          - Neutral: if the feedback does not lean towards either positive or negative sentiment and remains objective.
+                    `,
       });
 
       const codeChain = new LLMChain({
@@ -139,69 +141,75 @@ const UserSection = () => {
     comments: Yup.string().required("Comments is a required field!"),
   });
 
+  const handleModalClose = () => {
+    navigate(Paths.home);
+  };
+
   return (
-    <Container>
-      <Wrapper>
-        <OpacityAnimation>
-          <UserSectionMainContainer>
-            <HeadingText>Employee Feedback Form</HeadingText>
-            <Formik
-              onSubmit={handleSubmitForm}
-              initialValues={initialValue}
-              validationSchema={validationSchema}
-            >
-              <Form>
-                <InputFieldWrapper>
-                  <InputField
-                    type="text"
-                    placeholder="Please enter your name"
-                    name="name"
-                  />
-                  <ErrorMessageText>
-                    <ErrorMessage name="name" />
-                  </ErrorMessageText>
-                </InputFieldWrapper>
+    <>
+      <Container>
+        <Wrapper>
+          <OpacityAnimation>
+            <UserSectionMainContainer>
+              <HeadingText>Employee Feedback Form</HeadingText>
+              <Formik
+                onSubmit={handleSubmitForm}
+                initialValues={initialValue}
+                validationSchema={validationSchema}
+              >
+                <Form>
+                  <InputFieldWrapper>
+                    <InputField
+                      type="text"
+                      placeholder="Please enter your name"
+                      name="name"
+                    />
+                    <ErrorMessageText>
+                      <ErrorMessage name="name" />
+                    </ErrorMessageText>
+                  </InputFieldWrapper>
 
-                <FilterDropDown
-                  isDataSelected={isDataSelected}
-                  setDataSelected={setDataSelected}
-                  filterData={dropDown}
-                  isDropDownOpen={isDropDownOpen}
-                  setDropDownOpen={setDropDownOpen}
-                />
-
-                <ErrorMessageText>
-                  <ErrorMessage name="department" />
-                </ErrorMessageText>
-                <TextAreaContainer>
-                  <TextAreaField
-                    component="textarea"
-                    placeholder="Please enter your feedback"
-                    name="comments"
+                  <FilterDropDown
+                    isDataSelected={isDataSelected}
+                    setDataSelected={setDataSelected}
+                    filterData={dropDown}
+                    isDropDownOpen={isDropDownOpen}
+                    setDropDownOpen={setDropDownOpen}
                   />
+
                   <ErrorMessageText>
-                    <ErrorMessage name="comments" />
+                    <ErrorMessage name="department" />
                   </ErrorMessageText>
-                </TextAreaContainer>
-                <UserSectionButtonWrapper>
-                  <Button text="Submit" type="submit" />
-                </UserSectionButtonWrapper>
-              </Form>
-            </Formik>
-          </UserSectionMainContainer>
-          {isSuccessModal && (
-            <SuccessModal
-              isLoading={isLoading}
-              setSuccessModal={setSuccessModal}
-              heading="Success"
-              description="   Thank you for taking time to provide feedback. We appreciate
+                  <TextAreaContainer>
+                    <TextAreaField
+                      component="textarea"
+                      placeholder="Please enter your feedback"
+                      name="comments"
+                    />
+                    <ErrorMessageText>
+                      <ErrorMessage name="comments" />
+                    </ErrorMessageText>
+                  </TextAreaContainer>
+                  <UserSectionButtonWrapper>
+                    <Button text="Submit" type="submit" />
+                  </UserSectionButtonWrapper>
+                </Form>
+              </Formik>
+            </UserSectionMainContainer>
+            {isSuccessModal && (
+              <SuccessModal
+                isLoading={isLoading}
+                handleCloseModal={handleModalClose}
+                heading="Success"
+                description="   Thank you for taking time to provide feedback. We appreciate
               hearing from you and will review your comments carefully."
-            />
-          )}
-        </OpacityAnimation>
-      </Wrapper>
-    </Container>
+              />
+            )}
+          </OpacityAnimation>
+        </Wrapper>
+      </Container>
+    </>
   );
 };
 
-export default UserSection;
+export default UserEmployeeFeedback;

@@ -10,7 +10,11 @@ export const SharedButton = styled.button<any>`
   color: #fff;
   border-radius: 30px;
   cursor: pointer;
-  :disabled {
-    opacity: 0.5;
-  }
+`;
+
+export const LoadingContainer = styled.span`
+  display: inline-block;
+  height: 100%;
+  width: 90px;
+  color: red;
 `;

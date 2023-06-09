@@ -7,7 +7,7 @@ import {
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-const SECRET_KET = "AI_EXPRESS_PROJECT";
+const SECRET_KEY = "AI_EXPRESS_PROJECT";
 
 export const homeRoute = (req, res) => {
   res.send("Hello Express");
@@ -70,8 +70,13 @@ export const userSignIn = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { email: existUser.email, id: existUser._id },
-      SECRET_KET
+      {
+        email: existUser.email,
+        id: existUser._id,
+        name: existUser.name,
+      },
+      SECRET_KEY,
+      { expiresIn: "1d" }
     );
 
     res.status(201).json({ user: existUser, token, message: true });
@@ -155,4 +160,45 @@ export const getUserFeedbackTopic = async (req, res) => {
   } catch (e) {
     console.log(e);
   }
+};
+
+export const updateUserFeedbackTopic = async (req, res) => {
+  try {
+    const update = req.body;
+    await UserFeedbackTopicForm.findByIdAndUpdate(req.body._id, update);
+    res.send({ user: update, message: true });
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const deleteUserFeedbackTopic = async (req, res) => {
+  try {
+    await UserFeedbackTopicForm.findByIdAndDelete(req.params.id);
+    res.send({ response: "Successfully deleted", message: true });
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const userDetails = async (req, res) => {
+  const token = req.headers.authorization;
+
+  if (!token || !token.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "Missing or invalid token" });
+  }
+
+  const jwtToken = token.split(" ")[1];
+
+  jwt.verify(jwtToken, SECRET_KEY, async (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+    const user = await UserSignUp.findOne(
+      { email: decoded.email },
+      { __v: 0, password: 0, confirmPassword: 0 }
+    );
+
+    return res.json(user);
+  });
 };

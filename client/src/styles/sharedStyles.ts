@@ -25,7 +25,7 @@ export const Container = styled.div<any>`
   }
 `;
 
-const opacityAnimation = keyframes`
+export const opacityAnimation = keyframes`
 0% {
     opacity: 0;
   }
@@ -117,7 +117,7 @@ export const FeedbackTopicContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
 `;
 export const FeedbackTopicHeading = styled.h1`
   color: #fff;
@@ -131,4 +131,21 @@ export const FeedbackTopicText = styled.h3`
 
 export const StyledLink = styled(Link)`
   text-decoration: none;
+`;
+
+export const DummyContainer = styled.div`
+  height: 70vh;
+  color: #fff;
+  font-size: 30px;
+  font-weight: 600;
+  display: grid;
+  place-items: center;
+`;
+
+export const AlreadyUser = styled.div`
+  text-align: center;
+  span {
+    color: #b269e8;
+    cursor: pointer;
+  }
 `;

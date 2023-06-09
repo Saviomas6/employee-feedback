@@ -11,11 +11,16 @@ import * as Yup from "yup";
 import SharedModal from "../../SharedModal";
 import Button from "../../../button/Button";
 import { useCreateFeedbackTopic } from "../../../../logic/reactQuery/mutation/useCreateFeedbackTopic";
+import { useEditFeedbackTopic } from "../../../../logic/reactQuery/mutation/useEditFeedbackTopic";
 
 interface I_Props {
   setCreateTopicModalOpen(value: boolean): void;
   setCreateTopicLoading(value: boolean): void;
   setCreateTopicSuccess(value: boolean): void;
+
+  isEditable?: boolean;
+  isEditTopicName?: any;
+  isEditTopicId?: any;
 }
 
 interface I_Values {
@@ -26,8 +31,13 @@ const CreateTopicModal = ({
   setCreateTopicModalOpen,
   setCreateTopicLoading,
   setCreateTopicSuccess,
+  isEditable,
+  isEditTopicName,
+  isEditTopicId,
 }: I_Props) => {
   const { mutateAsync: createFeedbackTopic } = useCreateFeedbackTopic();
+  const { mutateAsync: editFeedbackTopic } = useEditFeedbackTopic();
+
   const handleModalClose = () => {
     setCreateTopicModalOpen(false);
   };
@@ -36,25 +46,48 @@ const CreateTopicModal = ({
     topicName: Yup.string().required("Topic is required"),
   });
 
+  const savedValues = {
+    topicName: isEditTopicName,
+  };
+
   const initialValues = {
     topicName: "",
   };
 
   const handleSubmitForm = async (values: I_Values) => {
-    const dataValues = {
-      topicName: values?.topicName,
-      topicValue: values?.topicName.replaceAll(" ", "-").toLowerCase(),
-    };
-    try {
-      setCreateTopicLoading(true);
-      setCreateTopicSuccess(true);
-      setCreateTopicModalOpen(false);
-      const result = await createFeedbackTopic(dataValues);
-      if (result?.data?.message) {
-        setCreateTopicLoading(false);
+    if (isEditable) {
+      const editValues = {
+        _id: isEditTopicId,
+        topicName: values?.topicName,
+        topicValue: values?.topicName.replaceAll(" ", "-").toLowerCase(),
+      };
+      try {
+        setCreateTopicLoading(true);
+        setCreateTopicSuccess(true);
+        setCreateTopicModalOpen(false);
+        const result = await editFeedbackTopic(editValues);
+        if (result?.data?.message) {
+          setCreateTopicLoading(false);
+        }
+      } catch (e) {
+        console.log(e);
       }
-    } catch (e) {
-      console.log(e);
+    } else {
+      const dataValues = {
+        topicName: values?.topicName,
+        topicValue: values?.topicName.replaceAll(" ", "-").toLowerCase(),
+      };
+      try {
+        setCreateTopicLoading(true);
+        setCreateTopicSuccess(true);
+        setCreateTopicModalOpen(false);
+        const result = await createFeedbackTopic(dataValues);
+        if (result?.data?.message) {
+          setCreateTopicLoading(false);
+        }
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
 
@@ -62,11 +95,12 @@ const CreateTopicModal = ({
     <div>
       <SharedModal onClickClose={handleModalClose}>
         <div>
-          <ModalHeading>Create Topic</ModalHeading>
+          <ModalHeading>{isEditable ? "Edit" : "Create"} Topic</ModalHeading>
           <Formik
             onSubmit={handleSubmitForm}
-            initialValues={initialValues}
+            initialValues={isEditable ? savedValues : initialValues}
             validationSchema={validationSchema}
+            enableReinitialize={isEditable ? true : false}
           >
             <Form>
               <InputLabel htmlFor="topicName">Topic</InputLabel>
@@ -83,7 +117,7 @@ const CreateTopicModal = ({
               </ErrorMessageText>
 
               <ModalButtonWrapper>
-                <Button type="submit" text="Create" />
+                <Button type="submit" text={isEditable ? "Edit" : "Create"} />
               </ModalButtonWrapper>
             </Form>
           </Formik>
