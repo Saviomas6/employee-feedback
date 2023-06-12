@@ -7,10 +7,12 @@ import {
   deleteUserFeedbackTopic,
   getEmployee,
   getUserAnnouncement,
+  getUserAnnouncementById,
   getUserFeedback,
   getUserFeedbackTopic,
   homeRoute,
   updateEmployee,
+  updateUserAnnouncement,
   updateUserFeedbackTopic,
   userAnnouncement,
   userDetails,
@@ -68,5 +70,11 @@ userRouter.post("/user-announcement", userAnnouncement);
 //get-user-announcement
 userRouter.get("/user-announcement", getUserAnnouncement);
 
+//get-user-announcement-id
+userRouter.get("/user-announcement/:id", getUserAnnouncementById);
+
 //delete-user-announcement
 userRouter.delete("/user-announcement/:id", deleteUserAnnouncement);
+
+//put-user-announcement
+userRouter.put("/user-announcement", updateUserAnnouncement);

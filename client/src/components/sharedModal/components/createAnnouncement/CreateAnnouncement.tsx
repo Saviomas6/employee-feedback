@@ -15,12 +15,13 @@ import { OpenAI } from "langchain/llms/openai";
 import { PromptTemplate } from "langchain/prompts";
 import { LLMChain } from "langchain/chains";
 import { useCreateAnnouncementMutation } from "../../../../logic/reactQuery/mutation/useCreateAnnouncement";
+import { useEditAnnouncement } from "../../../../logic/reactQuery/mutation/useEditAnnouncement";
+import { useGetUserAnnouncementById } from "../../../../logic/reactQuery/query/useGetUserAnnouncementById";
 interface I_Props {
   setCreateAnnouncementModalOpen(value: boolean): void;
   setCreateAnnouncementLoading(value: boolean): void;
   setCreateAnnouncementSuccess(value: boolean): void;
   isEditable?: boolean;
-  isEditAnnouncementName?: any;
   isEditAnnouncementId?: any;
 }
 
@@ -29,10 +30,11 @@ const CreateAnnouncement = ({
   setCreateAnnouncementModalOpen,
   setCreateAnnouncementSuccess,
   isEditAnnouncementId,
-  isEditAnnouncementName,
   isEditable,
 }: I_Props) => {
   const { mutateAsync: createAnnouncement } = useCreateAnnouncementMutation();
+  const { mutateAsync: editAnnouncement } = useEditAnnouncement();
+  const { data }: any = useGetUserAnnouncementById(isEditAnnouncementId);
 
   const handleModalClose = () => {
     setCreateAnnouncementModalOpen(false);
@@ -40,12 +42,12 @@ const CreateAnnouncement = ({
 
   const validationSchema = Yup.object().shape({
     announcementHeading: Yup.string().required("Heading is required"),
-    announcementDescription: Yup.string().required("Heading is required"),
+    announcementDescription: Yup.string().required("Description is required"),
   });
 
   const savedValues = {
-    announcementHeading: "",
-    announcementDescription: "",
+    announcementHeading: data && data[0]?.announcementHeading,
+    announcementDescription: data && data[0]?.announcementDescription,
   };
 
   const initialValues = {
@@ -53,9 +55,10 @@ const CreateAnnouncement = ({
     announcementDescription: "",
   };
 
-  const handleSubmitForm = async (values: any, { resetForm }: any) => {
+  const handleSubmitForm = async (values: any) => {
     try {
       setCreateAnnouncementLoading(true);
+      setCreateAnnouncementModalOpen(false);
       setCreateAnnouncementSuccess(true);
       const llm = new OpenAI({
         openAIApiKey: import.meta.env.VITE_API_KEY,
@@ -78,19 +81,33 @@ const CreateAnnouncement = ({
       const summaryData = response?.summary;
 
       if (summaryData) {
-        const data = {
-          announcementHeading: values?.announcementHeading,
-          announcementHeadingValue: values?.announcementHeading
-            .replaceAll(" ", "-")
-            .toLowerCase(),
-          announcementDescription: values?.announcementDescription,
-          announcementSummary: summaryData.replace(/\n/g, ""),
-        };
-        const result = await createAnnouncement(data);
-        if (result?.data?.message) {
-          setCreateAnnouncementLoading(false);
-          resetForm();
-          setCreateAnnouncementModalOpen(false);
+        if (isEditable) {
+          const editData = {
+            _id: isEditAnnouncementId,
+            announcementHeading: values?.announcementHeading,
+            announcementHeadingValue: values?.announcementHeading
+              .replaceAll(" ", "-")
+              .toLowerCase(),
+            announcementDescription: values?.announcementDescription,
+            announcementSummary: summaryData.replace(/\n/g, ""),
+          };
+          const result = await editAnnouncement(editData);
+          if (result?.data?.message) {
+            setCreateAnnouncementLoading(false);
+          }
+        } else {
+          const data = {
+            announcementHeading: values?.announcementHeading,
+            announcementHeadingValue: values?.announcementHeading
+              .replaceAll(" ", "-")
+              .toLowerCase(),
+            announcementDescription: values?.announcementDescription,
+            announcementSummary: summaryData.replace(/\n/g, ""),
+          };
+          const result = await createAnnouncement(data);
+          if (result?.data?.message) {
+            setCreateAnnouncementLoading(false);
+          }
         }
       }
     } catch (error: any) {

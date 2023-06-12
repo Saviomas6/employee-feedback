@@ -1,9 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import {
   AdminButtonWrapper,
   Container,
   CreateTopicButtonContainer,
-  DummyContainer,
   EditButton,
   FeedbackTopicContainer,
   FeedbackTopicLayout,
@@ -13,7 +11,6 @@ import {
 } from "../../../styles/sharedStyles";
 import { useState } from "react";
 import Button from "../../../components/button/Button";
-import CreateTopicModal from "../../../components/sharedModal/components/createTopicModal/CreateTopicModal";
 import LoadingSpinner from "../../../components/loading/LoadingSpinner";
 import SuccessModal from "../../../components/sharedModal/components/successModal/SuccessModal";
 import CreateAnnouncement from "../../../components/sharedModal/components/createAnnouncement/CreateAnnouncement";
@@ -21,6 +18,7 @@ import { useGetUserAnnouncement } from "../../../logic/reactQuery/query/useGetAn
 import { useDeleteAnnouncement } from "../../../logic/reactQuery/mutation/useDeleteAnnouncement";
 import ConfirmDelete from "../../../components/sharedModal/components/confirmDelete/ConfirmDelete";
 import EmptyFound from "../../../components/emptyFound/EmptyFound";
+import { useNavigate } from "react-router-dom";
 
 const AdminAnnouncementTopic = () => {
   const navigate = useNavigate();
@@ -36,9 +34,6 @@ const AdminAnnouncementTopic = () => {
     useState<boolean>(false);
   const [isDeleteAnnouncementOpen, setDeleteAnnouncementOpen] =
     useState<boolean>(false);
-  const [isEditAnnouncementName, setEditAnnouncementName] = useState<
-    string | undefined
-  >("");
   const [isEditAnnouncementId, setEditAnnouncementId] = useState<
     string | undefined
   >("");
@@ -69,18 +64,35 @@ const AdminAnnouncementTopic = () => {
 
         <FeedbackTopicLayout dataLength={data?.length === 0}>
           {data?.map((value) => (
-            <OpacityAnimation onClick={() => {}}>
+            <OpacityAnimation
+              key={value?._id}
+              onClick={() => {
+                navigate(`/admin-announcement-topic/${value?._id}`);
+              }}
+            >
               <FeedbackTopicContainer>
                 <FeedbackTopicText>
                   {value?.announcementHeading}
                 </FeedbackTopicText>
                 <AdminButtonWrapper>
-                  <EditButton color="orange" onClick={() => {}}>
+                  <EditButton
+                    color="orange"
+                    onClick={(
+                      e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                    ) => {
+                      e.stopPropagation();
+                      setEditAnnouncementId(value?._id);
+                      setEditAnnouncementModalOpen(true);
+                    }}
+                  >
                     Edit
                   </EditButton>
                   <EditButton
                     color="red"
-                    onClick={() => {
+                    onClick={(
+                      e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                    ) => {
+                      e.stopPropagation();
                       setEditAnnouncementId(value?._id);
                       setDeleteAnnouncementOpen(true);
                     }}
@@ -109,7 +121,6 @@ const AdminAnnouncementTopic = () => {
         {isEditAnnouncementModalOpen && (
           <CreateAnnouncement
             isEditable={true}
-            isEditAnnouncementName={isEditAnnouncementName}
             isEditAnnouncementId={isEditAnnouncementId}
             setCreateAnnouncementModalOpen={setEditAnnouncementModalOpen}
             setCreateAnnouncementLoading={setCreateAnnouncementLoading}

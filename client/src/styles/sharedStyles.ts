@@ -177,3 +177,36 @@ export const EditButton = styled.button<{ color: string }>`
   cursor: pointer;
   border-radius: 10px;
 `;
+
+export const AnnouncementHeadingContainer = styled.div`
+  margin: 20px 0;
+`;
+
+export const AnnouncementHeading = styled.div`
+  font-size: 30px;
+  color: #fff;
+  font-weight: 600;
+  background-color: #212332;
+  border-radius: 20px;
+  padding: 20px;
+  span {
+    color: #ff008e;
+    font-weight: 600;
+  }
+`;
+
+export const AnnouncementDescriptionContainer = styled.div``;
+
+export const AnnouncementDescription = styled.div`
+  font-size: 22px;
+  color: #fff;
+  font-weight: 500;
+  background-color: #212332;
+  border-radius: 20px;
+  padding: 20px;
+  margin: 25px 0;
+  span {
+    color: #ff008e;
+    font-weight: 600;
+  }
+`;

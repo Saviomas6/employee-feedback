@@ -77,7 +77,9 @@ const AdminEmployeeFeedbackTopic = () => {
                     <AdminButtonWrapper>
                       <EditButton
                         color="orange"
-                        onClick={(e: any) => {
+                        onClick={(
+                          e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                        ) => {
                           e.stopPropagation();
                           setEditTopicName(topic?.topicName);
                           setEditTopicId(topic?._id);
@@ -88,7 +90,9 @@ const AdminEmployeeFeedbackTopic = () => {
                       </EditButton>
                       <EditButton
                         color="red"
-                        onClick={(e: any) => {
+                        onClick={(
+                          e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                        ) => {
                           e.stopPropagation();
                           setEditTopicId(
                             topic?.topicName.replaceAll(" ", "-").toLowerCase()

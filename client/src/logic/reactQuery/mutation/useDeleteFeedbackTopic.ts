@@ -3,8 +3,6 @@ import { axiosInstance } from "../../../utils/axiosInterceptor";
 import { useMutation, useQueryClient } from "react-query";
 
 const deleteFeedbackTopic = (option: any) => {
-  console.log(option?.topicName);
-
   const url = `${apiEndPoints?.userFeedbackTopic}/${option?.topicName}`;
   return axiosInstance.delete(url);
 };

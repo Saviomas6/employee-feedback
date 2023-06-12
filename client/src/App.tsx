@@ -1,14 +1,12 @@
 import { useEffect } from "react";
 import { setLoggedDetail, setLoggedIn } from "./logic/redux/action/action";
-import { useAppDispatch, useAppSelector } from "./logic/redux/store/hooks";
+import { useAppDispatch } from "./logic/redux/store/hooks";
 import RoutePath from "./routes/RoutePath";
 import { OpacityAnimation } from "./styles/sharedStyles";
 import { decodeToken } from "./utils/utils";
 
 const App = () => {
   const dispatch = useAppDispatch();
-  const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
-  console.log("isLoggedIn", isLoggedIn);
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("expirationTime");

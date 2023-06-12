@@ -237,3 +237,26 @@ export const deleteUserAnnouncement = async (req, res) => {
     console.log(e);
   }
 };
+
+export const updateUserAnnouncement = async (req, res) => {
+  try {
+    const update = req.body;
+    await UserAnnouncementForm.findByIdAndUpdate(req.body._id, update);
+    res.send({ user: update, message: true });
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const getUserAnnouncementById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const userAnnouncement = await UserAnnouncementForm.find(
+      { _id: id },
+      { __v: 0 }
+    );
+    res.send(userAnnouncement);
+  } catch (e) {
+    console.log(e);
+  }
+};

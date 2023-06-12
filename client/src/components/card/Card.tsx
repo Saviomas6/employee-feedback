@@ -14,7 +14,7 @@ const Card = ({ text, review, inputName, isDataSelected }: I_Props) => {
           Name : {handlePrecision(inputName, 36)}
         </FeedbackText>
         <FeedbackText title={isDataSelected}>
-          Branch : {handlePrecision(isDataSelected, 46)}
+          Department : {handlePrecision(isDataSelected, 46)}
         </FeedbackText>
         <FeedbackText title={text}>
           Comments : {handlePrecision(text, 150)}

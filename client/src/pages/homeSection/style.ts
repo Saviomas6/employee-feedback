@@ -50,3 +50,25 @@ export const HomepageButtonWrapper = styled.div`
   justify-content: space-between;
   margin: 25px 0;
 `;
+
+export const HomepageVisionMainContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  grid-gap: 20px;
+  margin: 50px 0;
+`;
+export const HomepageVisionLeftContainer = styled.div``;
+export const HomepageVisionLeftImageContainer = styled.div`
+  height: 450px;
+  width: 450px;
+`;
+export const HomepageVisionRightContainer = styled.div``;
+
+export const HomepageVisionLeftBoxContainer = styled.div`
+  background-color: #212332;
+  color: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  margin: 16px 0;
+`;
