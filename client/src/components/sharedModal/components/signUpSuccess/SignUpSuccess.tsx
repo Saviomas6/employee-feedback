@@ -17,7 +17,11 @@ const SignUpSuccess = ({ isLoading }: I_Props) => {
     navigate(Paths.home);
   };
   return (
-    <SharedModal onClickClose={handleCloseModal} isLoading={isLoading}>
+    <SharedModal
+      onClickClose={handleCloseModal}
+      isLoading={isLoading}
+      bgColor="rgba(0,0,0,0.7)"
+    >
       <div>
         {isLoading ? (
           <MiniLoader />

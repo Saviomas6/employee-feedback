@@ -75,7 +75,7 @@ export const NavTab = styled(Link)<{ pathTab: boolean }>`
   font-weight: 500;
   color: #fff;
   padding: 5px 0;
-  border-bottom: ${({ pathTab }) => (pathTab ? "2px solid #b269e8" : "none")};
+  border-bottom: ${({ pathTab }) => (pathTab ? "2px solid #ff008e" : "none")};
 `;
 
 export const StyledLink = styled(Link)`
@@ -91,7 +91,7 @@ export const ProfilePicContainer = styled.div`
   justify-content: center;
   box-sizing: border-box;
   cursor: pointer;
-  background-color: #b269e8;
+  background-color: #ff008e;
 `;
 
 export const LogoLayout = styled.div`

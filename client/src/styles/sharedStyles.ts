@@ -88,9 +88,11 @@ export const effect = keyframes`
   0% {
     color: #fff;
   }
-  50%{
-    color: #b269e8;
+
+  50% {
+    color: #FF008E;
   }
+
   100%{
     color: #fff;
   }
@@ -100,11 +102,11 @@ export const Wrapper = styled.div`
   padding: 100px 0;
 `;
 
-export const FeedbackTopicLayout = styled.div`
+export const FeedbackTopicLayout = styled.div<{ dataLength?: boolean }>`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   grid-gap: 30px;
-  padding: 30px 0;
+  padding: ${({ dataLength }) => (dataLength ? "0" : "30px 0")};
 `;
 
 export const FeedbackTopicContainer = styled.div`
@@ -145,7 +147,33 @@ export const DummyContainer = styled.div`
 export const AlreadyUser = styled.div`
   text-align: center;
   span {
-    color: #b269e8;
+    color: #ff008e;
     cursor: pointer;
   }
+`;
+
+export const CreateTopicButtonContainer = styled.div`
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+`;
+
+export const AdminButtonWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+  width: 100%;
+`;
+
+export const EditButton = styled.button<{ color: string }>`
+  height: 45px;
+  width: 100%;
+  outline: none;
+  border: none;
+  font-size: 16px;
+  color: #fff;
+  background-color: ${({ color }) => color};
+  cursor: pointer;
+  border-radius: 10px;
 `;

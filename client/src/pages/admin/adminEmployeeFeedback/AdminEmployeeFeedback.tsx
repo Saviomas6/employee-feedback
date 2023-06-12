@@ -61,7 +61,12 @@ const AdminEmployeeFeedback = () => {
             {!isLoading &&
               !isError &&
               !isFetching &&
-              getUserFeedbackById?.length === 0 && <EmptyFound />}
+              getUserFeedbackById?.length === 0 && (
+                <EmptyFound
+                  heading="No Feedback Found!"
+                  description="You don't have any feedback right now."
+                />
+              )}
             {!isLoading &&
               !isError &&
               !isFetching &&

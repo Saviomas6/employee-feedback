@@ -22,10 +22,6 @@ import AdminAnnouncement from "../pages/admin/adminAnnouncement/AdminAnnouncemen
 import { useGetUserDetail } from "../logic/reactQuery/query/useUserDetails";
 import LoadingSpinner from "../components/loading/LoadingSpinner";
 
-// const getRouteRenderWithAuth = (route: RouteDefinition, i: number) => {
-//   return () => <route.component />;
-// };
-
 export interface RouteDefinition {
   element: any;
   routes?: RouteDefinition[];
@@ -142,7 +138,6 @@ export const routes: RouteDefinition[] = [
 const RoutePath = () => {
   const { data, isLoading, isFetching } = useGetUserDetail();
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
-  console.log("isLoggedIn", isLoggedIn);
 
   function getRouteRenderWithAuth(isLoggedIn: boolean, route: RouteDefinition) {
     const RouteComponent = route.requires

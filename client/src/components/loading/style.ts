@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 
 export const LoadingSpinnerMainContainer = styled.div<{ height?: string }>`
-  height: ${({ height }) => height || "70vh"};
+  height: ${({ height }) => height || "60vh"};
   display: grid;
   place-items: center;
 `;

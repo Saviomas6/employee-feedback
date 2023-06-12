@@ -2,8 +2,11 @@ import { styled } from "styled-components";
 import empty from "../../assets/empty.json";
 import Lottie from "react-lottie";
 import { OpacityAnimation } from "../../styles/sharedStyles";
-
-const EmptyFound = () => {
+interface I_Props {
+  heading: string;
+  description: string;
+}
+const EmptyFound = ({ heading, description }: I_Props) => {
   const defaultErrorOptions = {
     loop: true,
     autoplay: true,
@@ -20,8 +23,8 @@ const EmptyFound = () => {
             <Lottie options={defaultErrorOptions} />
           </NotFoundImageContainer>
         </NotFoundImageMainContainer>
-        <Heading>No Feedback Found!</Heading>
-        <Description>You don't have any feedback right now.</Description>
+        <Heading>{heading}</Heading>
+        <Description>{description}</Description>
       </NotFoundMainContainer>
     </OpacityAnimation>
   );

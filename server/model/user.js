@@ -62,6 +62,25 @@ const userFeedBackTopicSchema = new mongoose.Schema({
   },
 });
 
+const userAnnouncementSchema = new mongoose.Schema({
+  announcementHeading: {
+    type: String,
+    required: true,
+  },
+  announcementHeadingValue: {
+    type: String,
+    required: true,
+  },
+  announcementDescription: {
+    type: String,
+    required: true,
+  },
+  announcementSummary: {
+    type: String,
+    required: true,
+  },
+});
+
 export const UserSignUp = mongoose.model("User", userSignUpSchema);
 export const UserFeedbackForm = mongoose.model(
   "UserFeedback",
@@ -70,4 +89,8 @@ export const UserFeedbackForm = mongoose.model(
 export const UserFeedbackTopicForm = mongoose.model(
   "UserFeedbackTopic",
   userFeedBackTopicSchema
+);
+export const UserAnnouncementForm = mongoose.model(
+  "UserAnnouncement",
+  userAnnouncementSchema
 );

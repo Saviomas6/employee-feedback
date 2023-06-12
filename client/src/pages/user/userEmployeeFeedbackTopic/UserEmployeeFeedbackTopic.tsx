@@ -9,6 +9,7 @@ import {
 import { useGetUserFeedbackTopic } from "../../../logic/reactQuery/query/useGetUserFeedBackTopic";
 import LoadingSpinner from "../../../components/loading/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
+import EmptyFound from "../../../components/emptyFound/EmptyFound";
 
 const UserEmployeeFeedbackTopic = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const UserEmployeeFeedbackTopic = () => {
     <div>
       <Container>
         <Wrapper>
-          <FeedbackTopicLayout>
+          <FeedbackTopicLayout dataLength={data?.length === 0}>
             {!isLoading &&
               !isFetching &&
               data?.map((topic, i) => (
@@ -36,6 +37,12 @@ const UserEmployeeFeedbackTopic = () => {
               ))}
           </FeedbackTopicLayout>
           {isLoading && !isError && isFetching && <LoadingSpinner />}
+          {!isLoading && !isError && !isFetching && data?.length === 0 && (
+            <EmptyFound
+              heading="No Feedback Found!"
+              description="You don't have any feedback right now."
+            />
+          )}
         </Wrapper>
       </Container>
     </div>

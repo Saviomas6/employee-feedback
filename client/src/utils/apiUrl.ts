@@ -5,4 +5,5 @@ export const apiEndPoints = {
   signUp: "/user/signup",
   signIn: "/user/signin",
   userDetails: "/user/userDetails",
+  userAnnouncement: "/user/user-announcement",
 };

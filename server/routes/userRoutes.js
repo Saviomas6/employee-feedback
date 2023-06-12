@@ -3,13 +3,16 @@ export const userRouter = express.Router();
 import {
   createEmployee,
   deleteEmployee,
+  deleteUserAnnouncement,
   deleteUserFeedbackTopic,
   getEmployee,
+  getUserAnnouncement,
   getUserFeedback,
   getUserFeedbackTopic,
   homeRoute,
   updateEmployee,
   updateUserFeedbackTopic,
+  userAnnouncement,
   userDetails,
   userFeedback,
   userFeedbackTopic,
@@ -58,3 +61,12 @@ userRouter.delete("/user-feedback-topic/:id", deleteUserFeedbackTopic);
 
 //userDetails
 userRouter.get("/userDetails", userDetails);
+
+//create-user-announcement
+userRouter.post("/user-announcement", userAnnouncement);
+
+//get-user-announcement
+userRouter.get("/user-announcement", getUserAnnouncement);
+
+//delete-user-announcement
+userRouter.delete("/user-announcement/:id", deleteUserAnnouncement);

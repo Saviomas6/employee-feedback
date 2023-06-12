@@ -19,7 +19,11 @@ const SuccessModal = ({
   handleCloseModal,
 }: I_Props) => {
   return (
-    <SharedModal isLoading={isLoading} onClickClose={handleCloseModal}>
+    <SharedModal
+      isLoading={isLoading}
+      onClickClose={handleCloseModal}
+      bgColor="rgba(0,0,0,0.7)"
+    >
       <div>
         {isLoading ? (
           <MiniLoader />

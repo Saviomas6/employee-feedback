@@ -1,5 +1,6 @@
 import { Employee } from "../model/employee.js";
 import {
+  UserAnnouncementForm,
   UserFeedbackForm,
   UserFeedbackTopicForm,
   UserSignUp,
@@ -174,7 +175,8 @@ export const updateUserFeedbackTopic = async (req, res) => {
 
 export const deleteUserFeedbackTopic = async (req, res) => {
   try {
-    await UserFeedbackTopicForm.findByIdAndDelete(req.params.id);
+    await UserFeedbackTopicForm.deleteOne({ topicValue: req.params.id });
+    await UserFeedbackForm.deleteMany({ topic: req.params.id });
     res.send({ response: "Successfully deleted", message: true });
   } catch (e) {
     console.log(e);
@@ -201,4 +203,37 @@ export const userDetails = async (req, res) => {
 
     return res.json(user);
   });
+};
+
+export const userAnnouncement = async (req, res) => {
+  try {
+    const data = req.body;
+    const userAnnouncement = new UserAnnouncementForm(data);
+    userAnnouncement
+      .save()
+      .then(() =>
+        res.status(201).send({ user: userAnnouncement, message: true })
+      )
+      .catch((e) => res.status(400).send(e));
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const getUserAnnouncement = async (req, res) => {
+  try {
+    const userAnnouncement = await UserAnnouncementForm.find({}, { __v: 0 });
+    res.send(userAnnouncement);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const deleteUserAnnouncement = async (req, res) => {
+  try {
+    await UserAnnouncementForm.findByIdAndDelete(req.params.id);
+    res.send({ response: "Successfully deleted", message: true });
+  } catch (e) {
+    console.log(e);
+  }
 };

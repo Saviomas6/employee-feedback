@@ -2,18 +2,16 @@ import { apiEndPoints } from "../../../utils/apiUrl";
 import { axiosInstance } from "../../../utils/axiosInterceptor";
 import { useMutation, useQueryClient } from "react-query";
 
-const deleteFeedbackTopic = (option: any) => {
-  console.log(option?.topicName);
-
-  const url = `${apiEndPoints?.userFeedbackTopic}/${option?.topicName}`;
+const deleteAnnouncement = (option: any) => {
+  const url = `${apiEndPoints?.userAnnouncement}/${option?.id}`;
   return axiosInstance.delete(url);
 };
 
-export const useDeleteFeedbackTopic = () => {
+export const useDeleteAnnouncement = () => {
   const queryClient = useQueryClient();
-  return useMutation(deleteFeedbackTopic, {
+  return useMutation(deleteAnnouncement, {
     onSuccess: (_data) => {
-      queryClient.invalidateQueries("userFeedbackTopic");
+      queryClient.invalidateQueries("getUserAnnouncement");
     },
   });
 };

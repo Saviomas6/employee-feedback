@@ -15,7 +15,7 @@ export const AvatarProfile = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #b269e8;
+  background-color: #ff008e;
 `;
 
 export const ProfileName = styled.div`

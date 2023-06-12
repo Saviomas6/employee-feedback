@@ -1,6 +1,9 @@
 import { useState } from "react";
 import {
+  AdminButtonWrapper,
   Container,
+  CreateTopicButtonContainer,
+  EditButton,
   FeedbackTopicContainer,
   FeedbackTopicLayout,
   FeedbackTopicText,
@@ -8,11 +11,6 @@ import {
   Wrapper,
 } from "../../../styles/sharedStyles";
 
-import {
-  AdminButtonWrapper,
-  CreateTopicButtonContainer,
-  EditButton,
-} from "./style";
 import Button from "../../../components/button/Button";
 import CreateTopicModal from "../../../components/sharedModal/components/createTopicModal/CreateTopicModal";
 import SuccessModal from "../../../components/sharedModal/components/successModal/SuccessModal";
@@ -20,6 +18,8 @@ import { useGetUserFeedbackTopic } from "../../../logic/reactQuery/query/useGetU
 import LoadingSpinner from "../../../components/loading/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
 import { useDeleteFeedbackTopic } from "../../../logic/reactQuery/mutation/useDeleteFeedbackTopic";
+import EmptyFound from "../../../components/emptyFound/EmptyFound";
+import ConfirmDelete from "../../../components/sharedModal/components/confirmDelete/ConfirmDelete";
 const AdminEmployeeFeedbackTopic = () => {
   const navigate = useNavigate();
   const [isCreateTopicSuccess, setCreateTopicSuccess] =
@@ -31,17 +31,22 @@ const AdminEmployeeFeedbackTopic = () => {
   const [isEditTopicModalOpen, setEditTopicModalOpen] =
     useState<boolean>(false);
   const [isEditTopicSuccess, setEditTopicSuccess] = useState<boolean>(false);
+  const [isDeleteAnnouncementOpen, setDeleteAnnouncementOpen] =
+    useState<boolean>(false);
   const [isEditTopicName, setEditTopicName] = useState<string | undefined>("");
   const [isEditTopicId, setEditTopicId] = useState<string | undefined>("");
   const { data, isError, isFetching, isLoading } = useGetUserFeedbackTopic();
   const { mutateAsync } = useDeleteFeedbackTopic();
 
-  const handleDeleteTopic = async (e: any, id: string) => {
+  const handleDeleteTopic = async (e: any) => {
     const dataValues = {
-      id,
+      topicName: isEditTopicId,
     };
     e.stopPropagation();
-    await mutateAsync(dataValues);
+    const result = await mutateAsync(dataValues);
+    if (result?.data?.message) {
+      setDeleteAnnouncementOpen(false);
+    }
   };
 
   return (
@@ -55,7 +60,7 @@ const AdminEmployeeFeedbackTopic = () => {
             />
           </CreateTopicButtonContainer>
 
-          <FeedbackTopicLayout>
+          <FeedbackTopicLayout dataLength={data?.length === 0}>
             {!isLoading &&
               !isFetching &&
               data?.map((topic, i) => (
@@ -83,7 +88,13 @@ const AdminEmployeeFeedbackTopic = () => {
                       </EditButton>
                       <EditButton
                         color="red"
-                        onClick={(e: any) => handleDeleteTopic(e, topic?._id)}
+                        onClick={(e: any) => {
+                          e.stopPropagation();
+                          setEditTopicId(
+                            topic?.topicName.replaceAll(" ", "-").toLowerCase()
+                          );
+                          setDeleteAnnouncementOpen(true);
+                        }}
                       >
                         Delete
                       </EditButton>
@@ -93,6 +104,12 @@ const AdminEmployeeFeedbackTopic = () => {
               ))}
           </FeedbackTopicLayout>
           {isLoading && !isError && isFetching && <LoadingSpinner />}
+          {!isLoading && !isError && !isFetching && data?.length === 0 && (
+            <EmptyFound
+              heading="No Feedback Found!"
+              description="You don't have any feedback right now."
+            />
+          )}
           {isCreateTopicModalOpen && (
             <CreateTopicModal
               setCreateTopicModalOpen={setCreateTopicModalOpen}
@@ -124,6 +141,14 @@ const AdminEmployeeFeedbackTopic = () => {
               description="Topic edited successfully"
               isLoading={isCreateTopicLoading}
               handleCloseModal={() => setEditTopicSuccess(false)}
+            />
+          )}
+          {isDeleteAnnouncementOpen && (
+            <ConfirmDelete
+              heading="Are You Sure?"
+              description="Do you really want to delete these record?"
+              handleCloseModal={() => setDeleteAnnouncementOpen(false)}
+              handleDelete={(e: any) => handleDeleteTopic(e)}
             />
           )}
         </Wrapper>

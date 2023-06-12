@@ -8,6 +8,8 @@ import {
   HeadingText,
   InputField,
   InputFieldWrapper,
+  InputLabel,
+  InputMainWrapper,
   TextAreaContainer,
   TextAreaField,
   UserSectionButtonWrapper,
@@ -61,6 +63,11 @@ const dropDown = [
     id: 7,
     label: "Devops",
     value: "devops",
+  },
+  {
+    id: 8,
+    label: "Project Manager",
+    value: "projectManager",
   },
 ];
 
@@ -158,38 +165,49 @@ const UserEmployeeFeedback = () => {
                 validationSchema={validationSchema}
               >
                 <Form>
-                  <InputFieldWrapper>
-                    <InputField
-                      type="text"
-                      placeholder="Please enter your name"
-                      name="name"
-                    />
+                  <InputMainWrapper>
+                    <InputLabel htmlFor="name">Name :</InputLabel>
+                    <InputFieldWrapper>
+                      <InputField
+                        type="text"
+                        placeholder="Please enter your name"
+                        name="name"
+                        id="name"
+                      />
+                    </InputFieldWrapper>
                     <ErrorMessageText>
                       <ErrorMessage name="name" />
                     </ErrorMessageText>
-                  </InputFieldWrapper>
-
-                  <FilterDropDown
-                    isDataSelected={isDataSelected}
-                    setDataSelected={setDataSelected}
-                    filterData={dropDown}
-                    isDropDownOpen={isDropDownOpen}
-                    setDropDownOpen={setDropDownOpen}
-                  />
-
-                  <ErrorMessageText>
-                    <ErrorMessage name="department" />
-                  </ErrorMessageText>
-                  <TextAreaContainer>
-                    <TextAreaField
-                      component="textarea"
-                      placeholder="Please enter your feedback"
-                      name="comments"
+                  </InputMainWrapper>
+                  <InputMainWrapper>
+                    <InputLabel htmlFor="name">Department :</InputLabel>
+                    <FilterDropDown
+                      isDataSelected={isDataSelected}
+                      setDataSelected={setDataSelected}
+                      filterData={dropDown}
+                      isDropDownOpen={isDropDownOpen}
+                      setDropDownOpen={setDropDownOpen}
                     />
+
+                    <ErrorMessageText>
+                      <ErrorMessage name="department" />
+                    </ErrorMessageText>
+                  </InputMainWrapper>
+
+                  <InputMainWrapper>
+                    <InputLabel htmlFor="name">Comments :</InputLabel>
+                    <TextAreaContainer>
+                      <TextAreaField
+                        component="textarea"
+                        placeholder="Please enter your feedback"
+                        name="comments"
+                      />
+                    </TextAreaContainer>
                     <ErrorMessageText>
                       <ErrorMessage name="comments" />
                     </ErrorMessageText>
-                  </TextAreaContainer>
+                  </InputMainWrapper>
+
                   <UserSectionButtonWrapper>
                     <Button text="Submit" type="submit" />
                   </UserSectionButtonWrapper>

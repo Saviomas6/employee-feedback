@@ -64,7 +64,7 @@ export const FilterDropDownBorder = styled.div`
   border-bottom: 0.5px solid #808080;
   transition: all 0.5s ease-in-out;
   :hover {
-    background-color: #b269e8;
+    background-color: #ff008e;
   }
 `;
 export const FilterDropDownSelect = styled.div`

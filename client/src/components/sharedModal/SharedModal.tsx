@@ -9,10 +9,16 @@ interface I_Props {
   children: React.ReactNode;
   onClickClose(): void;
   isLoading?: boolean;
+  bgColor?: string;
 }
-const SharedModal = ({ children, onClickClose, isLoading }: I_Props) => {
+const SharedModal = ({
+  children,
+  onClickClose,
+  isLoading,
+  bgColor,
+}: I_Props) => {
   return (
-    <SharedModalMainContainer>
+    <SharedModalMainContainer bgColor={bgColor}>
       <SharedModalContainer>
         {children}
         {!isLoading && (

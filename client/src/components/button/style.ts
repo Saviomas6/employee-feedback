@@ -6,7 +6,7 @@ export const SharedButton = styled.button<any>`
   outline: none;
   border: none;
   font-size: 18px;
-  background-color: #b269e8;
+  background-color: #ff008e;
   color: #fff;
   border-radius: 30px;
   cursor: pointer;

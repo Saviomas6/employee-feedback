@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { opacityAnimation } from "../../styles/sharedStyles";
 
-export const SharedModalMainContainer = styled.div`
+export const SharedModalMainContainer = styled.div<{ bgColor?: string }>`
   height: 100%;
   width: 100%;
   position: fixed;
@@ -10,7 +10,7 @@ export const SharedModalMainContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #13131d;
+  background-color: ${({ bgColor }) => bgColor || "#13131d"};
   z-index: 10000;
 `;
 export const SharedModalContainer = styled.div`
@@ -20,7 +20,7 @@ export const SharedModalContainer = styled.div`
   width: 400px;
   border-radius: 10px;
   position: relative;
-  animation: ${opacityAnimation} 0.5s;
+  animation: ${opacityAnimation} 0.3s;
 `;
 
 export const CloseWrapper = styled.div`

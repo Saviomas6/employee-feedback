@@ -15,8 +15,8 @@ export const LeftContainer = styled.div`
 export const LeftContainerHeading = styled.div`
   font-size: 70px;
   font-weight: 700;
-  color: #fff;
-  animation: ${effect} 5s linear infinite;
+  color: #ff008e;
+  /* animation: ${effect} 8s linear infinite; */
 `;
 
 export const LeftContainerDescription = styled.div`
@@ -42,4 +42,11 @@ export const HomepageCardContainer = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   margin: 30px 0;
   grid-gap: 30px;
+`;
+
+export const HomepageButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 25px 0;
 `;

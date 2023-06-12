@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   NavbarContainer,
   NavbarMainContainer,
@@ -14,13 +14,11 @@ import {
   NavbarLayout,
 } from "./style";
 import rapid from "../../assets/rapid.svg";
-import { useAppDispatch, useAppSelector } from "../../logic/redux/store/hooks";
+import { useAppSelector } from "../../logic/redux/store/hooks";
 import { RxAvatar } from "react-icons/rx";
 import LogoutModal from "../sharedModal/components/logoutModal/LogoutModal";
-import { setLoggedDetail, setLoggedIn } from "../../logic/redux/action/action";
 import { Container } from "../../styles/sharedStyles";
 import { useLocation, useNavigate } from "react-router-dom";
-import { decodeToken } from "../../utils/utils";
 import { Paths } from "../../routes/path";
 
 interface I_Props {
@@ -29,50 +27,20 @@ interface I_Props {
 
 const Navbar = ({ isAdmin }: I_Props) => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+
   const location = useLocation();
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
   const isLoggedDetail = useAppSelector(
     (state) => state.userReducer.isLoggedDetail
   );
-
   const [isLogoutModalOpen, setLogoutModalOpen] = useState<boolean>(false);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("expirationTime");
-    dispatch(setLoggedIn(false));
-    dispatch(setLoggedDetail([]));
-  };
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const expirationTime = localStorage.getItem("expirationTime");
-    if (token && expirationTime) {
-      const decoded: any = decodeToken(String(token));
-      const currentTime = Date.now();
-      if (currentTime < Number(expirationTime)) {
-        dispatch(setLoggedIn(true));
-        dispatch(
-          setLoggedDetail([
-            {
-              name: decoded?.decodedToken?.name,
-              email: decoded?.decodedToken?.email,
-            },
-          ])
-        );
-      } else {
-        handleLogout();
-      }
-    }
-  }, [location]);
 
   return (
     <>
       <NavbarLayout>
         <Container>
           <NavbarMainContainer>
-            <StyledLink to={"/"}>
+            <StyledLink to={Paths.home}>
               <LogoLayout>
                 <LogoMainContainer>
                   <LogoContainer>
@@ -134,13 +102,13 @@ const Navbar = ({ isAdmin }: I_Props) => {
                 <>
                   <SignUpButton
                     bgColor="transparent"
-                    borderColor="1px  solid #b269e8"
+                    borderColor="1px  solid #ff008e"
                     onClick={() => navigate(Paths.signIn)}
                   >
                     SIGN IN
                   </SignUpButton>
                   <SignUpButton
-                    bgColor="#b269e8"
+                    bgColor="#ff008e"
                     borderColor="transparent"
                     onClick={() => navigate(Paths.signUp)}
                   >

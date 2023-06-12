@@ -93,7 +93,7 @@ const CreateTopicModal = ({
 
   return (
     <div>
-      <SharedModal onClickClose={handleModalClose}>
+      <SharedModal onClickClose={handleModalClose} bgColor="rgba(0,0,0,0.7)">
         <div>
           <ModalHeading>{isEditable ? "Edit" : "Create"} Topic</ModalHeading>
           <Formik

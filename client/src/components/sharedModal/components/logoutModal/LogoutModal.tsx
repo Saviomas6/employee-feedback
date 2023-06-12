@@ -35,7 +35,7 @@ const LogoutModal = ({ setLogoutModalClose }: I_Props) => {
   };
 
   return (
-    <SharedModal onClickClose={handleCloseModal}>
+    <SharedModal onClickClose={handleCloseModal} bgColor="rgba(0,0,0,0.7)">
       <>
         <ModalHeading>Logout</ModalHeading>
         <LogoutModalContainer>

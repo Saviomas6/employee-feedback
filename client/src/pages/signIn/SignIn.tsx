@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   AlreadyUser,
   ErrorMessageText,
@@ -30,7 +29,6 @@ const validationSchema = Yup.object().shape({
 const SignIn = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [isSignInLoading, setIsSignInLoading] = useState<boolean>(false);
   const { mutateAsync: createSignInForm, isLoading } = useSignInFormMutation();
   const initialValues = {
     email: "",
@@ -38,10 +36,8 @@ const SignIn = () => {
   };
 
   const handleSubmitForm = async (values: any) => {
-    setIsSignInLoading(true);
     const result = await createSignInForm(values);
     if (result?.data?.message) {
-      setIsSignInLoading(false);
       localStorage.setItem("token", result?.data?.token);
       const decoded: any = decodeToken(result?.data?.token);
       localStorage.setItem("expirationTime", decoded?.expirationTime);
