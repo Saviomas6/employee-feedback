@@ -53,7 +53,7 @@ const AdminAnnouncementTopic = () => {
   };
 
   return (
-    <Container>
+    <Container width="90%">
       <Wrapper>
         <CreateTopicButtonContainer>
           <Button
@@ -104,7 +104,7 @@ const AdminAnnouncementTopic = () => {
             </OpacityAnimation>
           ))}
         </FeedbackTopicLayout>
-        {isLoading && !isError && isFetching && <LoadingSpinner />}
+        {isLoading && <LoadingSpinner />}
         {!isLoading && !isError && !isFetching && data?.length === 0 && (
           <EmptyFound
             heading="No Announcement Found!"

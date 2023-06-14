@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Paths } from "./path";
 import Navbar from "../components/navbar/Navbar";
@@ -8,7 +9,7 @@ import UserEmployeeFeedback from "../pages/user/userEmployeeFeedback/UserEmploye
 import AdminEmployeeFeedback from "../pages/admin/adminEmployeeFeedback/AdminEmployeeFeedback";
 import UserEmployeeFeedbackTopic from "../pages/user/userEmployeeFeedbackTopic/UserEmployeeFeedbackTopic";
 import AdminEmployeeFeedbackTopic from "../pages/admin/adminEmployeeFeedbackTopic/AdminEmployeeFeedbackTopic";
-import { useAppSelector } from "../logic/redux/store/hooks";
+import { useAppDispatch, useAppSelector } from "../logic/redux/store/hooks";
 import SignUp from "../pages/signUp/SignUp";
 import SignIn from "../pages/signIn/SignIn";
 import UserProjectFeedback from "../pages/user/userProjectFeedback/UserProjectFeedback";
@@ -21,6 +22,8 @@ import AdminAnnouncementTopic from "../pages/admin/adminAnnouncementTopic/AdminA
 import AdminAnnouncement from "../pages/admin/adminAnnouncement/AdminAnnouncement";
 import { useGetUserDetail } from "../logic/reactQuery/query/useUserDetails";
 import LoadingSpinner from "../components/loading/LoadingSpinner";
+import { setLoggedDetail, setLoggedIn } from "../logic/redux/action/action";
+import { OpacityAnimation } from "../styles/sharedStyles";
 
 export interface RouteDefinition {
   element: any;
@@ -136,6 +139,7 @@ export const routes: RouteDefinition[] = [
 ].concat(NotFoundRoute as any);
 
 const RoutePath = () => {
+  const dispatch = useAppDispatch();
   const { data, isLoading, isFetching } = useGetUserDetail();
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
 
@@ -162,18 +166,47 @@ const RoutePath = () => {
     return <Route key={i} path={route.path} {...render} />;
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("expirationTime");
+    dispatch(setLoggedIn(false));
+    dispatch(setLoggedDetail([]));
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const expirationTime = localStorage.getItem("expirationTime");
+    if (token && expirationTime) {
+      const currentTime = Date.now();
+      if (currentTime < Number(expirationTime)) {
+        dispatch(setLoggedIn(true));
+        dispatch(
+          setLoggedDetail([
+            {
+              name: data?.name,
+              email: data?.email,
+              isAdmin: data?.isAdmin,
+            },
+          ])
+        );
+      } else {
+        handleLogout();
+      }
+    }
+  }, [location, data]);
+
   return (
-    <div>
+    <>
       {isLoading || isFetching ? (
-        <LoadingSpinner height="100vh" />
+        <LoadingSpinner />
       ) : (
-        <>
-          <Navbar isAdmin={data?.isAdmin} />
+        <OpacityAnimation>
+          <Navbar />
           <Routes>{routes.map(mapRoutes)}</Routes>
           <Footer />
-        </>
+        </OpacityAnimation>
       )}
-    </div>
+    </>
   );
 };
 export default RoutePath;

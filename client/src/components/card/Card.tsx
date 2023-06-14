@@ -1,18 +1,33 @@
-import { CardContainer, CardReviewResult, FeedbackText } from "./style";
+import {
+  AnonymousLabel,
+  CardContainer,
+  CardReviewResult,
+  FeedbackText,
+} from "./style";
 import { handlePrecision } from "../../utils/utils";
 interface I_Props {
   text: string;
   review: string;
   inputName: string;
   isDataSelected: string;
+  anonymous: boolean;
 }
-const Card = ({ text, review, inputName, isDataSelected }: I_Props) => {
+const Card = ({
+  text,
+  review,
+  inputName,
+  isDataSelected,
+  anonymous,
+}: I_Props) => {
   return (
     <CardContainer>
       <div>
-        <FeedbackText title={inputName}>
-          Name : {handlePrecision(inputName, 36)}
-        </FeedbackText>
+        {inputName && !anonymous && (
+          <FeedbackText title={inputName}>
+            Name : {handlePrecision(inputName, 36)}
+          </FeedbackText>
+        )}
+
         <FeedbackText title={isDataSelected}>
           Department : {handlePrecision(isDataSelected, 46)}
         </FeedbackText>
@@ -39,6 +54,7 @@ const Card = ({ text, review, inputName, isDataSelected }: I_Props) => {
           <span>&#128528;</span>
         )}
       </CardReviewResult>
+      {anonymous && <AnonymousLabel>A</AnonymousLabel>}
     </CardContainer>
   );
 };

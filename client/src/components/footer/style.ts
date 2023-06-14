@@ -14,4 +14,7 @@ export const FooterContent = styled.div`
   color: #fff;
   text-align: center;
   font-size: 600;
+  @media screen and (max-width: 480px) {
+    font-size: 14px;
+  }
 `;

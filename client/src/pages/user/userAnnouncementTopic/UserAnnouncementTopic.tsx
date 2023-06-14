@@ -16,7 +16,7 @@ const UserAnnouncementTopic = () => {
   const { data, isError, isLoading, isFetching } = useGetUserAnnouncement();
   return (
     <div>
-      <Container>
+      <Container width="90%">
         <Wrapper>
           <FeedbackTopicLayout dataLength={data?.length === 0}>
             {!isLoading &&
@@ -36,7 +36,7 @@ const UserAnnouncementTopic = () => {
                 </OpacityAnimation>
               ))}
           </FeedbackTopicLayout>
-          {isLoading && !isError && isFetching && <LoadingSpinner />}
+          {isLoading && !isError && <LoadingSpinner />}
           {!isLoading && !isError && !isFetching && data?.length === 0 && (
             <EmptyFound
               heading="No Announcement Found!"

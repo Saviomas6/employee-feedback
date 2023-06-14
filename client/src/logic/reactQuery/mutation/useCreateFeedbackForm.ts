@@ -7,6 +7,8 @@ interface I_Props {
   comments: string;
   review: string;
   topic: string | undefined;
+  email: string;
+  anonymous: boolean;
 }
 const createFeedbackForm = (options: I_Props) => {
   const url = apiEndPoints?.userFeedback;

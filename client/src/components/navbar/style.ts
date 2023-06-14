@@ -21,8 +21,8 @@ export const NavbarContainer = styled.div`
   font-size: 28px;
   font-weight: 600;
   color: #fff;
-  @media screen and (max-width: 768px) {
-    font-size: 14px;
+  @media screen and (max-width: 1132px) {
+    font-size: 24px;
   }
 `;
 
@@ -30,52 +30,48 @@ export const SignUpButtonWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1132px) {
     gap: 10px;
   }
-`;
-
-export const SignUpButton = styled.button<{
-  bgColor: string;
-  borderColor: string;
-}>`
-  height: 45px;
-  width: 130px;
-  outline: none;
-  border: none;
-  font-size: 18px;
-  background-color: ${({ bgColor }) => bgColor};
-  border: ${({ borderColor }) => borderColor};
-  color: #fff;
-  border-radius: 30px;
-  cursor: pointer;
-  @media screen and (max-width: 768px) {
-    font-size: 14px;
-    height: 35px;
-    width: 100px;
+  @media screen and (max-width: 900px) {
+    display: none;
   }
 `;
 
 export const LogoContainer = styled.div`
   display: flex;
+  @media screen and (max-width: 768px) {
+    height: 40px;
+    width: 40px;
+  }
 `;
 export const LogoMainContainer = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 
 export const NavTabs = styled.div`
   display: flex;
   align-items: center;
   gap: 40px;
+  @media screen and (max-width: 1132px) {
+    gap: 20px;
+  }
+  @media screen and (max-width: 900px) {
+    display: none;
+  }
 `;
 export const NavTab = styled(Link)<{ pathTab: boolean }>`
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
-  color: #fff;
+  color: ${({ pathTab }) => (pathTab ? " #ff008e" : "#fff")};
   padding: 5px 0;
   border-bottom: ${({ pathTab }) => (pathTab ? "2px solid #ff008e" : "none")};
+  @media screen and (max-width: 1024px) {
+    font-size: 12px;
+  }
 `;
 
 export const StyledLink = styled(Link)`
@@ -92,10 +88,27 @@ export const ProfilePicContainer = styled.div`
   box-sizing: border-box;
   cursor: pointer;
   background-color: #ff008e;
+  @media screen and (max-width: 1024px) {
+    height: 38px;
+    width: 38px;
+  }
 `;
 
 export const LogoLayout = styled.div`
   display: flex;
   align-items: center;
   gap: 30px;
+`;
+
+export const HamBuggerMenuContainer = styled.div`
+  @media screen and (min-width: 900px) {
+    display: none;
+  }
+  @media screen and (max-width: 900px) {
+    display: flex;
+  }
+`;
+
+export const SideBarWrapper = styled.div`
+  /* ... */
 `;

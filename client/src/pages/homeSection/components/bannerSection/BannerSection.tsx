@@ -1,18 +1,15 @@
-import {
-  HomepageButtonWrapper,
-  LeftContainer,
-  LeftContainerDescription,
-  LeftContainerHeading,
-  MainContainer,
-  RightContainer,
-} from "../../style";
+import * as Styled from "../../style";
 import Button from "../../../../components/button/Button";
 import Lottie from "react-lottie";
 import homepage from "../../../../assets/homepage.json";
 import { useNavigate } from "react-router-dom";
-import { Paths } from "../../../../routes/path";
+import { useAppSelector } from "../../../../logic/redux/store/hooks";
 const BannerSection = () => {
   const navigate = useNavigate();
+  const isLoggedDetail: any = useAppSelector(
+    (state) => state.userReducer.isLoggedDetail
+  );
+
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -22,24 +19,34 @@ const BannerSection = () => {
     },
   };
   return (
-    <MainContainer>
-      <LeftContainer>
-        <LeftContainerHeading>Employee Feedback System</LeftContainerHeading>
-        <LeftContainerDescription>
+    <Styled.MainContainer>
+      <Styled.LeftContainer>
+        <Styled.LeftContainerHeading>
+          Employee Feedback System
+        </Styled.LeftContainerHeading>
+        <Styled.LeftContainerDescription>
           Creating Ways for Employees to Share and Receive Feedback
-        </LeftContainerDescription>
+        </Styled.LeftContainerDescription>
 
-        <HomepageButtonWrapper>
+        <Styled.HomepageButtonWrapper>
           <Button
             text="Get Started"
-            onClick={() => navigate(Paths.userEmployeeFeedbackTopic)}
+            onClick={() =>
+              navigate(
+                isLoggedDetail[0]?.isAdmin
+                  ? "/admin-employee-feedback-topic"
+                  : "/user-employee-feedback-topic"
+              )
+            }
           />
-        </HomepageButtonWrapper>
-      </LeftContainer>
-      <RightContainer>
-        <Lottie options={defaultOptions} />
-      </RightContainer>
-    </MainContainer>
+        </Styled.HomepageButtonWrapper>
+      </Styled.LeftContainer>
+      <Styled.HomePageRightMainContainer>
+        <Styled.RightContainer>
+          <Lottie options={defaultOptions} />
+        </Styled.RightContainer>
+      </Styled.HomePageRightMainContainer>
+    </Styled.MainContainer>
   );
 };
 

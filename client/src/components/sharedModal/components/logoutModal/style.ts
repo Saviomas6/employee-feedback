@@ -5,6 +5,9 @@ export const LogoutModalContainer = styled.div`
   align-items: center;
   justify-content: center;
   margin: 20px 0;
+  @media screen and (max-width: 480px) {
+    margin: 14px 0;
+  }
 `;
 
 export const AvatarProfile = styled.div`
@@ -16,6 +19,10 @@ export const AvatarProfile = styled.div`
   align-items: center;
   justify-content: center;
   background-color: #ff008e;
+  @media screen and (max-width: 480px) {
+    height: 60px;
+    width: 60px;
+  }
 `;
 
 export const ProfileName = styled.div`
@@ -23,4 +30,7 @@ export const ProfileName = styled.div`
   color: #fff;
   text-align: center;
   margin: 6px 0;
+  @media screen and (max-width: 480px) {
+    font-size: 16px;
+  }
 `;

@@ -9,6 +9,11 @@ export const HomepageCardMainContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  div {
+    @media screen and (max-width: 768px) {
+      font-size: 14px;
+    }
+  }
 `;
 
 export const HomePageImageContainer = styled.div<{ color: string }>`
@@ -23,4 +28,7 @@ export const HomePageTitle = styled.div`
   font-weight: 600;
   text-align: center;
   margin: 20px 0;
+  @media screen and (max-width: 480px) {
+    font-size: 18px;
+  }
 `;

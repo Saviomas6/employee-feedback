@@ -117,6 +117,14 @@ export const userSignUp = async (req, res) => {
 export const userFeedback = async (req, res) => {
   try {
     const data = req.body;
+    const { email, topic } = req.body;
+    const existEmail = await UserFeedbackForm.findOne({ email });
+    const existTopic = await UserFeedbackForm.findOne({ topic });
+    if (existEmail && existTopic) {
+      return res
+        .status(400)
+        .json({ message: "You have already filled out the form." });
+    }
     const userFeedback = new UserFeedbackForm(data);
     userFeedback
       .save()

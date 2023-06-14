@@ -1,10 +1,4 @@
-import {
-  HomepageVisionLeftBoxContainer,
-  HomepageVisionLeftContainer,
-  HomepageVisionLeftImageContainer,
-  HomepageVisionMainContainer,
-  HomepageVisionRightContainer,
-} from "../../style";
+import * as Styled from "../../style";
 import Lottie from "react-lottie";
 import vision from "../../../../assets/vision.json";
 const VisionSection = () => {
@@ -39,21 +33,21 @@ const VisionSection = () => {
   ];
 
   return (
-    <HomepageVisionMainContainer>
-      <HomepageVisionLeftContainer>
-        <HomepageVisionLeftImageContainer>
+    <Styled.HomepageVisionMainContainer>
+      <Styled.HomepageVisionLeftContainer>
+        <Styled.HomepageVisionLeftImageContainer>
           <Lottie options={defaultVisionOptions} />
-        </HomepageVisionLeftImageContainer>
-      </HomepageVisionLeftContainer>
-      <HomepageVisionRightContainer>
+        </Styled.HomepageVisionLeftImageContainer>
+      </Styled.HomepageVisionLeftContainer>
+      <Styled.HomepageVisionRightContainer>
         {data.map((value) => (
-          <HomepageVisionLeftBoxContainer key={value?.id}>
+          <Styled.HomepageVisionLeftBoxContainer key={value?.id}>
             <h2>{value?.heading}</h2>
-            {value?.description}
-          </HomepageVisionLeftBoxContainer>
+            <div>{value?.description}</div>
+          </Styled.HomepageVisionLeftBoxContainer>
         ))}
-      </HomepageVisionRightContainer>
-    </HomepageVisionMainContainer>
+      </Styled.HomepageVisionRightContainer>
+    </Styled.HomepageVisionMainContainer>
   );
 };
 

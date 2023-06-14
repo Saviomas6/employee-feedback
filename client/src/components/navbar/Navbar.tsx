@@ -1,103 +1,89 @@
 import { useState } from "react";
-import {
-  NavbarContainer,
-  NavbarMainContainer,
-  SignUpButton,
-  SignUpButtonWrapper,
-  LogoContainer,
-  LogoMainContainer,
-  NavTabs,
-  NavTab,
-  StyledLink,
-  ProfilePicContainer,
-  LogoLayout,
-  NavbarLayout,
-} from "./style";
+import * as Styled from "./style";
 import rapid from "../../assets/rapid.svg";
 import { useAppSelector } from "../../logic/redux/store/hooks";
 import { RxAvatar } from "react-icons/rx";
+import { GiHamburgerMenu } from "react-icons/gi";
 import LogoutModal from "../sharedModal/components/logoutModal/LogoutModal";
-import { Container } from "../../styles/sharedStyles";
+import { Container, SignUpButton } from "../../styles/sharedStyles";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Paths } from "../../routes/path";
+import SideBar from "../sidebar/SideBar";
 
-interface I_Props {
-  isAdmin: boolean;
-}
-
-const Navbar = ({ isAdmin }: I_Props) => {
+const Navbar = () => {
   const navigate = useNavigate();
-
   const location = useLocation();
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
   const isLoggedDetail = useAppSelector(
     (state) => state.userReducer.isLoggedDetail
   );
   const [isLogoutModalOpen, setLogoutModalOpen] = useState<boolean>(false);
+  const [isSideBarOpen, setSideBarOpen] = useState<boolean>(false);
+  const getPathLocation = location.pathname.split("/")[1];
 
   return (
     <>
-      <NavbarLayout>
-        <Container>
-          <NavbarMainContainer>
-            <StyledLink to={Paths.home}>
-              <LogoLayout>
-                <LogoMainContainer>
-                  <LogoContainer>
-                    <img src={rapid} />
-                  </LogoContainer>
-                  <NavbarContainer>EF System</NavbarContainer>
-                </LogoMainContainer>
-                <NavTabs>
-                  <NavTab
-                    to={
-                      isAdmin
-                        ? "/admin-employee-feedback-topic"
-                        : "/user-employee-feedback-topic"
-                    }
-                    pathTab={
-                      location?.pathname === "/user-employee-feedback-topic" ||
-                      location?.pathname === "/admin-employee-feedback-topic"
-                    }
-                  >
-                    Employee Feedback
-                  </NavTab>
+      <Styled.NavbarLayout>
+        <Container width="90%">
+          <Styled.NavbarMainContainer>
+            <Styled.LogoLayout>
+              <Styled.LogoMainContainer onClick={() => navigate(Paths.home)}>
+                <Styled.LogoContainer>
+                  <img src={rapid} />
+                </Styled.LogoContainer>
+                <Styled.NavbarContainer>EF System</Styled.NavbarContainer>
+              </Styled.LogoMainContainer>
+              <Styled.NavTabs>
+                <Styled.NavTab
+                  to={
+                    isLoggedDetail[0]?.isAdmin
+                      ? "/admin-employee-feedback-topic"
+                      : "/user-employee-feedback-topic"
+                  }
+                  pathTab={
+                    getPathLocation === "user-employee-feedback-topic" ||
+                    getPathLocation === "admin-employee-feedback-topic"
+                  }
+                >
+                  Employee Feedback
+                </Styled.NavTab>
 
-                  <NavTab
-                    to={
-                      isAdmin
-                        ? "/admin-announcement-topic"
-                        : "/user-announcement-topic"
-                    }
-                    pathTab={
-                      location?.pathname === "/admin-announcement-topic" ||
-                      location?.pathname === "/user-announcement-topic"
-                    }
-                  >
-                    HR Announcement
-                  </NavTab>
-                  <NavTab
-                    to={
-                      isAdmin
-                        ? "/admin-project-feedback-topic"
-                        : "/user-project-feedback-topic"
-                    }
-                    pathTab={
-                      location?.pathname === "/admin-project-feedback-topic" ||
-                      location?.pathname === "/user-project-feedback-topic"
-                    }
-                  >
-                    Project Feedback
-                  </NavTab>
-                </NavTabs>
-              </LogoLayout>
-            </StyledLink>
+                <Styled.NavTab
+                  to={
+                    isLoggedDetail[0]?.isAdmin
+                      ? "/admin-announcement-topic"
+                      : "/user-announcement-topic"
+                  }
+                  pathTab={
+                    getPathLocation === "admin-announcement-topic" ||
+                    getPathLocation === "user-announcement-topic"
+                  }
+                >
+                  HR Announcement
+                </Styled.NavTab>
+                <Styled.NavTab
+                  to={
+                    isLoggedDetail[0]?.isAdmin
+                      ? "/admin-project-feedback-topic"
+                      : "/user-project-feedback-topic"
+                  }
+                  pathTab={
+                    getPathLocation === "admin-project-feedback-topic" ||
+                    getPathLocation === "user-project-feedback-topic"
+                  }
+                >
+                  Project Feedback
+                </Styled.NavTab>
+              </Styled.NavTabs>
+            </Styled.LogoLayout>
 
-            <SignUpButtonWrapper>
+            <Styled.SignUpButtonWrapper>
               {isLoggedIn && isLoggedDetail?.length !== 0 ? (
-                <ProfilePicContainer onClick={() => setLogoutModalOpen(true)}>
+                <Styled.ProfilePicContainer
+                  onClick={() => setLogoutModalOpen(true)}
+                >
                   <RxAvatar size="30" color="#fff" />
-                </ProfilePicContainer>
+                </Styled.ProfilePicContainer>
               ) : (
                 <>
                   <SignUpButton
@@ -116,14 +102,24 @@ const Navbar = ({ isAdmin }: I_Props) => {
                   </SignUpButton>
                 </>
               )}
-            </SignUpButtonWrapper>
+            </Styled.SignUpButtonWrapper>
+            <Styled.HamBuggerMenuContainer
+              onClick={() => setSideBarOpen(!isSideBarOpen)}
+            >
+              <GiHamburgerMenu size={30} color="#fff" />
+            </Styled.HamBuggerMenuContainer>
+
+            <SideBar
+              isSideBarOpen={isSideBarOpen}
+              setSideBarOpen={setSideBarOpen}
+            />
 
             {isLogoutModalOpen && (
               <LogoutModal setLogoutModalClose={setLogoutModalOpen} />
             )}
-          </NavbarMainContainer>
+          </Styled.NavbarMainContainer>
         </Container>
-      </NavbarLayout>
+      </Styled.NavbarLayout>
     </>
   );
 };

@@ -33,6 +33,10 @@ const userFeedBackSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  email: {
+    type: String,
+    required: true,
+  },
   department: {
     type: String,
     required: true,
@@ -47,6 +51,10 @@ const userFeedBackSchema = new mongoose.Schema({
   },
   topic: {
     type: String,
+    required: true,
+  },
+  anonymous: {
+    type: Boolean,
     required: true,
   },
 });

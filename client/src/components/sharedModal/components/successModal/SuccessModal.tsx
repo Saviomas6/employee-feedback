@@ -6,6 +6,12 @@ import {
 } from "../../../../styles/sharedStyles";
 import Button from "../../../button/Button";
 import MiniLoader from "../../../miniLoader/MiniLoader";
+import success from "../../../../assets/success.json";
+import Lottie from "react-lottie";
+import {
+  SuccessModalLottieContainer,
+  SuccessModalLottieMainContainer,
+} from "./style";
 interface I_Props {
   isLoading: boolean;
   heading: string;
@@ -18,6 +24,14 @@ const SuccessModal = ({
   description,
   handleCloseModal,
 }: I_Props) => {
+  const defaultErrorOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: success,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
   return (
     <SharedModal
       isLoading={isLoading}
@@ -30,10 +44,12 @@ const SuccessModal = ({
         ) : (
           <>
             <ModalHeading>{heading}</ModalHeading>
+            <SuccessModalLottieMainContainer>
+              <SuccessModalLottieContainer>
+                <Lottie options={defaultErrorOptions} />
+              </SuccessModalLottieContainer>
+            </SuccessModalLottieMainContainer>
             <ModalDescription>{description}</ModalDescription>
-            <ModalButtonWrapper>
-              <Button text="Close" onClick={handleCloseModal} />
-            </ModalButtonWrapper>
           </>
         )}
       </div>

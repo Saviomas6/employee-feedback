@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   AdminButtonWrapper,
   Container,
@@ -10,7 +10,6 @@ import {
   OpacityAnimation,
   Wrapper,
 } from "../../../styles/sharedStyles";
-
 import Button from "../../../components/button/Button";
 import CreateTopicModal from "../../../components/sharedModal/components/createTopicModal/CreateTopicModal";
 import SuccessModal from "../../../components/sharedModal/components/successModal/SuccessModal";
@@ -20,6 +19,9 @@ import { useNavigate } from "react-router-dom";
 import { useDeleteFeedbackTopic } from "../../../logic/reactQuery/mutation/useDeleteFeedbackTopic";
 import EmptyFound from "../../../components/emptyFound/EmptyFound";
 import ConfirmDelete from "../../../components/sharedModal/components/confirmDelete/ConfirmDelete";
+import { useAppSelector } from "../../../logic/redux/store/hooks";
+import { Paths } from "../../../routes/path";
+
 const AdminEmployeeFeedbackTopic = () => {
   const navigate = useNavigate();
   const [isCreateTopicSuccess, setCreateTopicSuccess] =
@@ -37,7 +39,9 @@ const AdminEmployeeFeedbackTopic = () => {
   const [isEditTopicId, setEditTopicId] = useState<string | undefined>("");
   const { data, isError, isFetching, isLoading } = useGetUserFeedbackTopic();
   const { mutateAsync } = useDeleteFeedbackTopic();
-
+  const isLoggedDetail = useAppSelector(
+    (state) => state.userReducer.isLoggedDetail
+  );
   const handleDeleteTopic = async (e: any) => {
     const dataValues = {
       topicName: isEditTopicId,
@@ -49,115 +53,115 @@ const AdminEmployeeFeedbackTopic = () => {
     }
   };
 
-  return (
-    <div>
-      <Container>
-        <Wrapper>
-          <CreateTopicButtonContainer>
-            <Button
-              text="Create"
-              onClick={() => setCreateTopicModalOpen(true)}
-            />
-          </CreateTopicButtonContainer>
+  useEffect(() => {
+    if (!isLoggedDetail[0]?.isAdmin) {
+      navigate(Paths.home);
+    }
+  }, [isLoggedDetail]);
 
-          <FeedbackTopicLayout dataLength={data?.length === 0}>
-            {!isLoading &&
-              !isFetching &&
-              data?.map((topic, i) => (
-                <OpacityAnimation
-                  onClick={() => {
-                    navigate(
-                      `/admin-employee-feedback-topic/${topic?.topicValue}`
-                    );
-                  }}
-                  key={i}
-                >
-                  <FeedbackTopicContainer>
-                    <FeedbackTopicText>{topic?.topicName}</FeedbackTopicText>
-                    <AdminButtonWrapper>
-                      <EditButton
-                        color="orange"
-                        onClick={(
-                          e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-                        ) => {
-                          e.stopPropagation();
-                          setEditTopicName(topic?.topicName);
-                          setEditTopicId(topic?._id);
-                          setEditTopicModalOpen(true);
-                        }}
-                      >
-                        Edit
-                      </EditButton>
-                      <EditButton
-                        color="red"
-                        onClick={(
-                          e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-                        ) => {
-                          e.stopPropagation();
-                          setEditTopicId(
-                            topic?.topicName.replaceAll(" ", "-").toLowerCase()
-                          );
-                          setDeleteAnnouncementOpen(true);
-                        }}
-                      >
-                        Delete
-                      </EditButton>
-                    </AdminButtonWrapper>
-                  </FeedbackTopicContainer>
-                </OpacityAnimation>
-              ))}
-          </FeedbackTopicLayout>
-          {isLoading && !isError && isFetching && <LoadingSpinner />}
-          {!isLoading && !isError && !isFetching && data?.length === 0 && (
-            <EmptyFound
-              heading="No Feedback Found!"
-              description="You don't have any feedback right now."
-            />
-          )}
-          {isCreateTopicModalOpen && (
-            <CreateTopicModal
-              setCreateTopicModalOpen={setCreateTopicModalOpen}
-              setCreateTopicLoading={setCreateTopicLoading}
-              setCreateTopicSuccess={setCreateTopicSuccess}
-            />
-          )}
-          {isEditTopicModalOpen && (
-            <CreateTopicModal
-              isEditable={true}
-              isEditTopicName={isEditTopicName}
-              isEditTopicId={isEditTopicId}
-              setCreateTopicModalOpen={setEditTopicModalOpen}
-              setCreateTopicLoading={setCreateTopicLoading}
-              setCreateTopicSuccess={setEditTopicSuccess}
-            />
-          )}
-          {isCreateTopicSuccess && (
-            <SuccessModal
-              heading="Success"
-              description="Topic created successfully"
-              isLoading={isCreateTopicLoading}
-              handleCloseModal={() => setCreateTopicSuccess(false)}
-            />
-          )}
-          {isEditTopicSuccess && (
-            <SuccessModal
-              heading="Success"
-              description="Topic edited successfully"
-              isLoading={isCreateTopicLoading}
-              handleCloseModal={() => setEditTopicSuccess(false)}
-            />
-          )}
-          {isDeleteAnnouncementOpen && (
-            <ConfirmDelete
-              heading="Are You Sure?"
-              description="Do you really want to delete these record?"
-              handleCloseModal={() => setDeleteAnnouncementOpen(false)}
-              handleDelete={(e: any) => handleDeleteTopic(e)}
-            />
-          )}
-        </Wrapper>
-      </Container>
-    </div>
+  return (
+    <Container width="90%">
+      <Wrapper>
+        <CreateTopicButtonContainer>
+          <Button text="Create" onClick={() => setCreateTopicModalOpen(true)} />
+        </CreateTopicButtonContainer>
+        <FeedbackTopicLayout dataLength={data?.length === 0}>
+          {!isLoading &&
+            !isFetching &&
+            data?.map((topic, i) => (
+              <OpacityAnimation
+                onClick={() => {
+                  navigate(
+                    `/admin-employee-feedback-topic/${topic?.topicValue}`
+                  );
+                }}
+                key={i}
+              >
+                <FeedbackTopicContainer>
+                  <FeedbackTopicText>{topic?.topicName}</FeedbackTopicText>
+                  <AdminButtonWrapper>
+                    <EditButton
+                      color="orange"
+                      onClick={(
+                        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                      ) => {
+                        e.stopPropagation();
+                        setEditTopicName(topic?.topicName);
+                        setEditTopicId(topic?._id);
+                        setEditTopicModalOpen(true);
+                      }}
+                    >
+                      Edit
+                    </EditButton>
+                    <EditButton
+                      color="red"
+                      onClick={(
+                        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                      ) => {
+                        e.stopPropagation();
+                        setEditTopicId(
+                          topic?.topicName.replaceAll(" ", "-").toLowerCase()
+                        );
+                        setDeleteAnnouncementOpen(true);
+                      }}
+                    >
+                      Delete
+                    </EditButton>
+                  </AdminButtonWrapper>
+                </FeedbackTopicContainer>
+              </OpacityAnimation>
+            ))}
+        </FeedbackTopicLayout>
+        {isLoading && <LoadingSpinner />}
+        {!isLoading && !isError && !isFetching && data?.length === 0 && (
+          <EmptyFound
+            heading="No Feedback Found!"
+            description="You don't have any feedback right now."
+          />
+        )}
+        {isCreateTopicModalOpen && (
+          <CreateTopicModal
+            setCreateTopicModalOpen={setCreateTopicModalOpen}
+            setCreateTopicLoading={setCreateTopicLoading}
+            setCreateTopicSuccess={setCreateTopicSuccess}
+          />
+        )}
+        {isEditTopicModalOpen && (
+          <CreateTopicModal
+            isEditable={true}
+            isEditTopicName={isEditTopicName}
+            isEditTopicId={isEditTopicId}
+            setCreateTopicModalOpen={setEditTopicModalOpen}
+            setCreateTopicLoading={setCreateTopicLoading}
+            setCreateTopicSuccess={setEditTopicSuccess}
+          />
+        )}
+        {isCreateTopicSuccess && (
+          <SuccessModal
+            heading="Success"
+            description="Topic created successfully"
+            isLoading={isCreateTopicLoading}
+            handleCloseModal={() => setCreateTopicSuccess(false)}
+          />
+        )}
+        {isEditTopicSuccess && (
+          <SuccessModal
+            heading="Success"
+            description="Topic edited successfully"
+            isLoading={isCreateTopicLoading}
+            handleCloseModal={() => setEditTopicSuccess(false)}
+          />
+        )}
+        {isDeleteAnnouncementOpen && (
+          <ConfirmDelete
+            heading="Are You Sure?"
+            description="Do you really want to delete these record?"
+            handleCloseModal={() => setDeleteAnnouncementOpen(false)}
+            handleDelete={(e: any) => handleDeleteTopic(e)}
+          />
+        )}
+      </Wrapper>
+    </Container>
   );
 };
 

@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  CloseWrapper,
-  SharedModalContainer,
-  SharedModalMainContainer,
-} from "./style";
+import * as Styled from "./style";
 import { AiFillCloseCircle } from "react-icons/ai";
 interface I_Props {
   children: React.ReactNode;
@@ -18,16 +14,16 @@ const SharedModal = ({
   bgColor,
 }: I_Props) => {
   return (
-    <SharedModalMainContainer bgColor={bgColor}>
-      <SharedModalContainer>
+    <Styled.SharedModalMainContainer bgColor={bgColor}>
+      <Styled.SharedModalContainer>
         {children}
         {!isLoading && (
-          <CloseWrapper onClick={onClickClose}>
+          <Styled.CloseWrapper onClick={onClickClose}>
             <AiFillCloseCircle size={25} />
-          </CloseWrapper>
+          </Styled.CloseWrapper>
         )}
-      </SharedModalContainer>
-    </SharedModalMainContainer>
+      </Styled.SharedModalContainer>
+    </Styled.SharedModalMainContainer>
   );
 };
 

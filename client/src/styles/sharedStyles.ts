@@ -43,6 +43,9 @@ export const InputLabel = styled.label`
   display: block;
   font-size: 18px;
   color: #fff;
+  @media screen and (max-width: 480px) {
+    font-size: 14px;
+  }
 `;
 
 export const InputFieldWrapper = styled.div`
@@ -61,6 +64,9 @@ export const InputField = styled(Field)`
   box-sizing: border-box;
   font-size: 18px;
   border-radius: 10px;
+  @media screen and (max-width: 480px) {
+    font-size: 16px;
+  }
 `;
 
 export const ModalButtonWrapper = styled.div`
@@ -78,6 +84,9 @@ export const ModalDescription = styled.div`
   font-size: 18px;
   text-align: center;
   margin: 10px 0;
+  @media screen and (max-width: 480px) {
+    font-size: 16px;
+  }
 `;
 export const ErrorMessageText = styled.div`
   color: #ff0000;
@@ -142,10 +151,14 @@ export const DummyContainer = styled.div`
   font-weight: 600;
   display: grid;
   place-items: center;
+  @media screen and (max-width: 480px) {
+    font-size: 18px;
+  }
 `;
 
 export const AlreadyUser = styled.div`
   text-align: center;
+  font-size: 14px;
   span {
     color: #ff008e;
     cursor: pointer;
@@ -193,6 +206,12 @@ export const AnnouncementHeading = styled.div`
     color: #ff008e;
     font-weight: 600;
   }
+  @media screen and (max-width: 768px) {
+    font-size: 24px;
+  }
+  @media screen and (max-width: 480px) {
+    font-size: 18px;
+  }
 `;
 
 export const AnnouncementDescriptionContainer = styled.div``;
@@ -208,5 +227,32 @@ export const AnnouncementDescription = styled.div`
   span {
     color: #ff008e;
     font-weight: 600;
+  }
+  @media screen and (max-width: 768px) {
+    font-size: 18px;
+  }
+  @media screen and (max-width: 480px) {
+    font-size: 16px;
+  }
+`;
+
+export const SignUpButton = styled.button<{
+  bgColor: string;
+  borderColor: string;
+}>`
+  height: 45px;
+  width: 130px;
+  outline: none;
+  border: none;
+  font-size: 18px;
+  background-color: ${({ bgColor }) => bgColor};
+  border: ${({ borderColor }) => borderColor};
+  color: #fff;
+  border-radius: 30px;
+  cursor: pointer;
+  @media screen and (max-width: 1024px) {
+    font-size: 14px;
+    height: 35px;
+    width: 100px;
   }
 `;

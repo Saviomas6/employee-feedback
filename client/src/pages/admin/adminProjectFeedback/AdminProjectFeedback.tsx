@@ -7,15 +7,13 @@ import {
 
 const AdminProjectFeedback = () => {
   return (
-    <div>
-      <Container>
-        <Wrapper>
-          <OpacityAnimation>
-            <DummyContainer>Admin Project Feedback</DummyContainer>
-          </OpacityAnimation>
-        </Wrapper>
-      </Container>
-    </div>
+    <Container width="90%">
+      <Wrapper>
+        <OpacityAnimation>
+          <DummyContainer>Admin Project Feedback</DummyContainer>
+        </OpacityAnimation>
+      </Wrapper>
+    </Container>
   );
 };
 

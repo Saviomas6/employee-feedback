@@ -10,13 +10,26 @@ import { useGetUserFeedbackTopic } from "../../../logic/reactQuery/query/useGetU
 import LoadingSpinner from "../../../components/loading/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
 import EmptyFound from "../../../components/emptyFound/EmptyFound";
+import { useEffect } from "react";
+import { Paths } from "../../../routes/path";
+import { useAppSelector } from "../../../logic/redux/store/hooks";
 
 const UserEmployeeFeedbackTopic = () => {
   const navigate = useNavigate();
   const { data, isError, isLoading, isFetching } = useGetUserFeedbackTopic();
+  const isLoggedDetail = useAppSelector(
+    (state) => state.userReducer.isLoggedDetail
+  );
+
+  useEffect(() => {
+    if (isLoggedDetail[0]?.isAdmin) {
+      navigate(Paths.home);
+    }
+  }, [isLoggedDetail]);
+
   return (
     <div>
-      <Container>
+      <Container width="90%">
         <Wrapper>
           <FeedbackTopicLayout dataLength={data?.length === 0}>
             {!isLoading &&

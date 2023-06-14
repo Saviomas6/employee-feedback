@@ -1,12 +1,6 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import Card from "../../../components/card/Card";
-import {
-  CardGridContainer,
-  ChartContainer,
-  ChartMainContainer,
-  Heading,
-  HeadingWrapper,
-} from "./style";
+import * as Styled from "./style";
 import {
   Container,
   OpacityAnimation,
@@ -14,13 +8,16 @@ import {
 } from "../../../styles/sharedStyles";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetUserFeedbackById } from "../../../logic/reactQuery/query/useGetUserFeedbackById";
 import LoadingSpinner from "../../../components/loading/LoadingSpinner";
 import EmptyFound from "../../../components/emptyFound/EmptyFound";
+import { useAppSelector } from "../../../logic/redux/store/hooks";
+import { Paths } from "../../../routes/path";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const AdminEmployeeFeedback = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const {
     data: getUserFeedbackById,
@@ -37,6 +34,11 @@ const AdminEmployeeFeedback = () => {
   const neutralCount: any = getUserFeedbackById?.filter(
     (val) => val?.review === "Neutral"
   );
+
+  const isLoggedDetail = useAppSelector(
+    (state) => state.userReducer.isLoggedDetail
+  );
+
   const data = {
     labels: ["Positive", "Negative", "Neutral"],
     datasets: [
@@ -52,10 +54,16 @@ const AdminEmployeeFeedback = () => {
     ],
   };
 
+  useEffect(() => {
+    if (!isLoggedDetail[0]?.isAdmin) {
+      navigate(Paths.home);
+    }
+  }, [isLoggedDetail]);
+
   return (
     <>
       <OpacityAnimation>
-        <Container>
+        <Container width="90%">
           <Wrapper>
             {isLoading && <LoadingSpinner />}
             {!isLoading &&
@@ -72,25 +80,25 @@ const AdminEmployeeFeedback = () => {
               !isFetching &&
               getUserFeedbackById?.length !== 0 && (
                 <>
-                  <ChartMainContainer>
-                    <ChartContainer>
+                  <Styled.ChartMainContainer>
+                    <Styled.ChartContainer>
                       <Doughnut data={data} />
-                    </ChartContainer>
-                  </ChartMainContainer>
+                    </Styled.ChartContainer>
+                  </Styled.ChartMainContainer>
 
-                  <HeadingWrapper>
-                    <Heading color="green">
+                  <Styled.HeadingWrapper>
+                    <Styled.Heading color="green">
                       Positive &#128515; - {positiveCount?.length || 0}
-                    </Heading>
-                    <Heading color="red">
+                    </Styled.Heading>
+                    <Styled.Heading color="red">
                       Negative &#128542; - {negativeCount?.length || 0}
-                    </Heading>
-                    <Heading color="orange">
+                    </Styled.Heading>
+                    <Styled.Heading color="orange">
                       Neutral &#128528; - {neutralCount?.length || 0}
-                    </Heading>
-                  </HeadingWrapper>
+                    </Styled.Heading>
+                  </Styled.HeadingWrapper>
 
-                  <CardGridContainer>
+                  <Styled.CardGridContainer>
                     {!isLoading &&
                       !isError &&
                       !isFetching &&
@@ -101,10 +109,11 @@ const AdminEmployeeFeedback = () => {
                             review={feedback?.review}
                             inputName={feedback?.name}
                             isDataSelected={feedback?.department}
+                            anonymous={feedback?.anonymous}
                           />
                         </Fragment>
                       ))}
-                  </CardGridContainer>
+                  </Styled.CardGridContainer>
                 </>
               )}
           </Wrapper>

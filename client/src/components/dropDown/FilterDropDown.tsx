@@ -1,15 +1,5 @@
 import { RiArrowDownSLine } from "react-icons/ri";
-import {
-  FilterDropDownArrowIcon,
-  FilterDropDownBorder,
-  FilterDropDownContainer,
-  FilterDropDownLayout,
-  FilterDropDownMainLayout,
-  FilterDropDownSelect,
-  FilterDropDownSelectButton,
-  FilterDropDownSelectButtonContainer,
-  FilterDropDownWrapper,
-} from "./FilterDropDown.style";
+import * as Styled from "./FilterDropDown.style";
 
 interface I_FilterData {
   id: string | number;
@@ -31,40 +21,40 @@ const FilterDropDown = ({
   setDataSelected,
 }: I_FilterDropDown) => {
   return (
-    <FilterDropDownMainLayout>
-      <FilterDropDownLayout>
-        <FilterDropDownSelectButton
+    <Styled.FilterDropDownMainLayout>
+      <Styled.FilterDropDownLayout>
+        <Styled.FilterDropDownSelectButton
           onClick={() => setDropDownOpen(!isDropDownOpen)}
         >
-          <FilterDropDownSelectButtonContainer>
+          <Styled.FilterDropDownSelectButtonContainer>
             <div>{isDataSelected}</div>
-            <FilterDropDownArrowIcon>
+            <Styled.FilterDropDownArrowIcon>
               <RiArrowDownSLine size={25} />
-            </FilterDropDownArrowIcon>
-          </FilterDropDownSelectButtonContainer>
-        </FilterDropDownSelectButton>
+            </Styled.FilterDropDownArrowIcon>
+          </Styled.FilterDropDownSelectButtonContainer>
+        </Styled.FilterDropDownSelectButton>
 
         {isDropDownOpen && (
-          <FilterDropDownContainer>
-            <FilterDropDownWrapper>
+          <Styled.FilterDropDownContainer>
+            <Styled.FilterDropDownWrapper>
               {filterData.map((val) => (
-                <FilterDropDownBorder
+                <Styled.FilterDropDownBorder
                   key={val?.id}
                   onClick={() => {
                     setDataSelected(val?.label);
                     setDropDownOpen(false);
                   }}
                 >
-                  <FilterDropDownSelect>
+                  <Styled.FilterDropDownSelect>
                     <div>{val?.label}</div>
-                  </FilterDropDownSelect>
-                </FilterDropDownBorder>
+                  </Styled.FilterDropDownSelect>
+                </Styled.FilterDropDownBorder>
               ))}
-            </FilterDropDownWrapper>
-          </FilterDropDownContainer>
+            </Styled.FilterDropDownWrapper>
+          </Styled.FilterDropDownContainer>
         )}
-      </FilterDropDownLayout>
-    </FilterDropDownMainLayout>
+      </Styled.FilterDropDownLayout>
+    </Styled.FilterDropDownMainLayout>
   );
 };
 

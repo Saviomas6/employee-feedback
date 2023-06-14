@@ -19,8 +19,8 @@ const AdminAnnouncement = () => {
     useGetUserAnnouncementById(id);
 
   return (
-    <Container>
-      {isLoading || (isFetching && <LoadingSpinner height="100vh" />)}
+    <Container width="90%">
+      {isLoading && <LoadingSpinner />}
       {!isLoading && !isFetching && !isError && (
         <Wrapper>
           <OpacityAnimation>

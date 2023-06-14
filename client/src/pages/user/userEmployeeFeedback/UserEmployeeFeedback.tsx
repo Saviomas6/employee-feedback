@@ -4,29 +4,22 @@ import {
   OpacityAnimation,
   Wrapper,
 } from "../../../styles/sharedStyles";
-import {
-  HeadingText,
-  InputField,
-  InputFieldWrapper,
-  InputLabel,
-  InputMainWrapper,
-  TextAreaContainer,
-  TextAreaField,
-  UserSectionButtonWrapper,
-  UserSectionMainContainer,
-} from "./style";
+import * as Styled from "./style";
 import { OpenAI } from "langchain/llms/openai";
 import { PromptTemplate } from "langchain/prompts";
 import { LLMChain } from "langchain/chains";
 import Button from "../../../components/button/Button";
 import FilterDropDown from "../../../components/dropDown/FilterDropDown";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SuccessModal from "../../../components/sharedModal/components/successModal/SuccessModal";
 import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCreateFeedbackFormMutation } from "../../../logic/reactQuery/mutation/useCreateFeedbackForm";
 import { Paths } from "../../../routes/path";
+import ToggleButton from "../../../components/toggleButton/ToggleButton";
+import { useAppSelector } from "../../../logic/redux/store/hooks";
+import ErrorModal from "../../../components/sharedModal/components/errorModal/ErrorModal";
 
 const dropDown = [
   {
@@ -74,16 +67,22 @@ const dropDown = [
 const UserEmployeeFeedback = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { mutateAsync: createFeedbackForm } = useCreateFeedbackFormMutation();
+  const { mutateAsync: createFeedbackForm, error }: any =
+    useCreateFeedbackFormMutation();
   const [isDropDownOpen, setDropDownOpen] = useState<boolean>(false);
+  const [isAnonymous, setAnonymous] = useState<boolean>(false);
   const [isDataSelected, setDataSelected] =
     useState<string>("Business Analyst");
   const [isSuccessModal, setSuccessModal] = useState<boolean>(false);
+  const [isErrorModal, setErrorModal] = useState<boolean>(false);
   const [isLoading, setLoading] = useState<boolean>(false);
+  const isLoggedDetail = useAppSelector(
+    (state) => state.userReducer.isLoggedDetail
+  );
 
   const initialValue = {
-    name: "",
     comments: "",
+    anonymous: false,
   };
 
   const handleSubmitForm = async (values: any, { resetForm }: any) => {
@@ -124,11 +123,13 @@ const UserEmployeeFeedback = () => {
 
       if (reviewData) {
         const data = {
-          name: values.name,
+          name: isLoggedDetail[0]?.name,
+          email: isLoggedDetail[0]?.email,
           department: isDataSelected,
           comments: values.comments,
           review: reviewData,
           topic: id,
+          anonymous: values.anonymous,
         };
         const result = await createFeedbackForm(data);
         if (result?.data?.message) {
@@ -138,13 +139,15 @@ const UserEmployeeFeedback = () => {
         }
       }
     } catch (error: any) {
-      console.error("Error analyzing code quality:", error.message);
-      throw error;
+      console.log(error);
+      setErrorModal(true);
+      setSuccessModal(false);
+      resetForm();
+      setDataSelected("Business Analyst");
     }
   };
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Name is a required field!"),
     comments: Yup.string().required("Comments is a required field!"),
   });
 
@@ -152,75 +155,111 @@ const UserEmployeeFeedback = () => {
     navigate(Paths.home);
   };
 
+  useEffect(() => {
+    if (isLoggedDetail[0]?.isAdmin) {
+      navigate(Paths.home);
+    }
+  }, [isLoggedDetail]);
+
   return (
     <>
-      <Container>
+      <Container width="90%">
         <Wrapper>
           <OpacityAnimation>
-            <UserSectionMainContainer>
-              <HeadingText>Employee Feedback Form</HeadingText>
+            <Styled.UserSectionMainContainer>
+              <Styled.HeadingText>Employee Feedback Form</Styled.HeadingText>
               <Formik
                 onSubmit={handleSubmitForm}
                 initialValues={initialValue}
                 validationSchema={validationSchema}
               >
-                <Form>
-                  <InputMainWrapper>
-                    <InputLabel htmlFor="name">Name :</InputLabel>
-                    <InputFieldWrapper>
-                      <InputField
-                        type="text"
-                        placeholder="Please enter your name"
-                        name="name"
-                        id="name"
+                {({ setFieldValue }) => (
+                  <Form>
+                    {!isAnonymous && (
+                      <Styled.InputMainWrapper>
+                        <Styled.InputLabel>Name :</Styled.InputLabel>
+                        <Styled.InputFieldWrapper>
+                          <Styled.NameField>
+                            {isLoggedDetail[0]?.name}
+                          </Styled.NameField>
+                        </Styled.InputFieldWrapper>
+                      </Styled.InputMainWrapper>
+                    )}
+
+                    <Styled.InputMainWrapper>
+                      <Styled.InputLabel htmlFor="name">
+                        Department :
+                      </Styled.InputLabel>
+                      <FilterDropDown
+                        isDataSelected={isDataSelected}
+                        setDataSelected={setDataSelected}
+                        filterData={dropDown}
+                        isDropDownOpen={isDropDownOpen}
+                        setDropDownOpen={setDropDownOpen}
                       />
-                    </InputFieldWrapper>
-                    <ErrorMessageText>
-                      <ErrorMessage name="name" />
-                    </ErrorMessageText>
-                  </InputMainWrapper>
-                  <InputMainWrapper>
-                    <InputLabel htmlFor="name">Department :</InputLabel>
-                    <FilterDropDown
-                      isDataSelected={isDataSelected}
-                      setDataSelected={setDataSelected}
-                      filterData={dropDown}
-                      isDropDownOpen={isDropDownOpen}
-                      setDropDownOpen={setDropDownOpen}
-                    />
 
-                    <ErrorMessageText>
-                      <ErrorMessage name="department" />
-                    </ErrorMessageText>
-                  </InputMainWrapper>
+                      <ErrorMessageText>
+                        <ErrorMessage name="department" />
+                      </ErrorMessageText>
+                    </Styled.InputMainWrapper>
 
-                  <InputMainWrapper>
-                    <InputLabel htmlFor="name">Comments :</InputLabel>
-                    <TextAreaContainer>
-                      <TextAreaField
-                        component="textarea"
-                        placeholder="Please enter your feedback"
-                        name="comments"
+                    <Styled.InputMainWrapper>
+                      <Styled.InputLabel htmlFor="name">
+                        Comments :
+                      </Styled.InputLabel>
+                      <Styled.TextAreaContainer>
+                        <Styled.TextAreaField
+                          component="textarea"
+                          placeholder="Please enter your feedback"
+                          name="comments"
+                        />
+                      </Styled.TextAreaContainer>
+                      <ErrorMessageText>
+                        <ErrorMessage name="comments" />
+                      </ErrorMessageText>
+                    </Styled.InputMainWrapper>
+
+                    <Styled.UserSectionAnonymousMainContainer>
+                      <div>
+                        <Styled.UserSectionAnonymousLabel>
+                          Anonymous Mode :
+                        </Styled.UserSectionAnonymousLabel>
+                        <Styled.UserSectionAnonymousDescription>
+                          Hide the identity of participants so they can provide
+                          truly candid feedback
+                        </Styled.UserSectionAnonymousDescription>
+                      </div>
+                      <ToggleButton
+                        label="create"
+                        isChecked={isAnonymous}
+                        setChecked={setAnonymous}
+                        setFieldValue={setFieldValue}
                       />
-                    </TextAreaContainer>
-                    <ErrorMessageText>
-                      <ErrorMessage name="comments" />
-                    </ErrorMessageText>
-                  </InputMainWrapper>
+                    </Styled.UserSectionAnonymousMainContainer>
 
-                  <UserSectionButtonWrapper>
-                    <Button text="Submit" type="submit" />
-                  </UserSectionButtonWrapper>
-                </Form>
+                    <Styled.UserSectionButtonWrapper>
+                      <Button text="Submit" type="submit" />
+                    </Styled.UserSectionButtonWrapper>
+                  </Form>
+                )}
               </Formik>
-            </UserSectionMainContainer>
+            </Styled.UserSectionMainContainer>
             {isSuccessModal && (
               <SuccessModal
                 isLoading={isLoading}
                 handleCloseModal={handleModalClose}
                 heading="Success"
-                description="   Thank you for taking time to provide feedback. We appreciate
+                description="Thank you for taking time to provide feedback. We appreciate
               hearing from you and will review your comments carefully."
+              />
+            )}
+            {isErrorModal && (
+              <ErrorModal
+                handleCloseModal={() => {
+                  setErrorModal(false);
+                }}
+                heading="Error"
+                description={error?.response?.data?.message}
               />
             )}
           </OpacityAnimation>

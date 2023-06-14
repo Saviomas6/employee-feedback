@@ -27,10 +27,6 @@ export const FilterDropDownSelectButton = styled.div`
   @media screen and (max-width: 768px) {
     width: 100%;
   }
-  @media screen and (max-width: 560px) {
-    height: 35px;
-    font-size: 14px;
-  }
 `;
 export const FilterDropDownArrowIcon = styled.div`
   display: flex;
@@ -49,10 +45,6 @@ export const FilterDropDownContainer = styled.div`
   @media screen and (max-width: 768px) {
     width: 100%;
   }
-  @media screen and (max-width: 560px) {
-    top: 8px;
-    font-size: 14px;
-  }
 `;
 export const FilterDropDownWrapper = styled.div`
   margin-top: 40px;
@@ -65,6 +57,7 @@ export const FilterDropDownBorder = styled.div`
   transition: all 0.5s ease-in-out;
   :hover {
     background-color: #ff008e;
+    color: #fff;
   }
 `;
 export const FilterDropDownSelect = styled.div`
@@ -73,12 +66,7 @@ export const FilterDropDownSelect = styled.div`
   display: flex;
   align-items: center;
   padding: 0 25px;
-
   cursor: pointer;
-
-  @media screen and (max-width: 560px) {
-    height: 35px;
-  }
 `;
 export const FilterDropDownSelectIcon = styled.div`
   display: flex;

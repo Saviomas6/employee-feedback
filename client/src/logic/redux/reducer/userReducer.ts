@@ -4,17 +4,14 @@ import { setLoggedDetail, setLoggedIn } from "../action/action";
 interface I_Props {
   name: string;
   email: string;
+  isAdmin?: boolean;
 }
 
 interface I_InitialStateProps {
-  signUp: boolean;
-  signIn: boolean;
   isLoggedIn: boolean;
   isLoggedDetail: I_Props[];
 }
 export const initialState: I_InitialStateProps = {
-  signUp: false,
-  signIn: false,
   isLoggedIn: false,
   isLoggedDetail: [],
 };

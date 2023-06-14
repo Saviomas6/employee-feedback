@@ -7,7 +7,7 @@ import {
 
 const UserProjectFeedback = () => {
   return (
-    <Container>
+    <Container width="90%">
       <Wrapper>
         <OpacityAnimation>
           <DummyContainer>User Project Feedback</DummyContainer>

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   AlreadyUser,
   ErrorMessageText,
@@ -18,6 +19,7 @@ import Button from "../../components/button/Button";
 import SharedModal from "../../components/sharedModal/SharedModal";
 import { useNavigate } from "react-router-dom";
 import { Paths } from "../../routes/path";
+import ErrorModal from "../../components/sharedModal/components/errorModal/ErrorModal";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -29,28 +31,39 @@ const validationSchema = Yup.object().shape({
 const SignIn = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { mutateAsync: createSignInForm, isLoading } = useSignInFormMutation();
+  const [isSignInError, setIsSignInError] = useState<boolean>(false);
+  const {
+    mutateAsync: createSignInForm,
+    isLoading,
+    error,
+  }: any = useSignInFormMutation();
   const initialValues = {
     email: "",
     password: "",
   };
 
-  const handleSubmitForm = async (values: any) => {
-    const result = await createSignInForm(values);
-    if (result?.data?.message) {
-      localStorage.setItem("token", result?.data?.token);
-      const decoded: any = decodeToken(result?.data?.token);
-      localStorage.setItem("expirationTime", decoded?.expirationTime);
-      dispatch(setLoggedIn(true));
-      dispatch(
-        setLoggedDetail([
-          {
-            name: decoded?.decodedToken?.name,
-            email: decoded?.decodedToken?.email,
-          },
-        ])
-      );
-      navigate(Paths.home);
+  const handleSubmitForm = async (values: any, { resetForm }: any) => {
+    try {
+      const result = await createSignInForm(values);
+      if (result?.data?.message) {
+        localStorage.setItem("token", result?.data?.token);
+        const decoded: any = decodeToken(result?.data?.token);
+        localStorage.setItem("expirationTime", decoded?.expirationTime);
+        dispatch(setLoggedIn(true));
+        dispatch(
+          setLoggedDetail([
+            {
+              name: decoded?.decodedToken?.name,
+              email: decoded?.decodedToken?.email,
+            },
+          ])
+        );
+        navigate(Paths.home);
+      }
+    } catch (e) {
+      console.log(e);
+      setIsSignInError(true);
+      resetForm();
     }
   };
 
@@ -107,6 +120,15 @@ const SignIn = () => {
             </ModalButtonWrapper>
           </Form>
         </Formik>
+        {isSignInError && (
+          <ErrorModal
+            handleCloseModal={() => {
+              setIsSignInError(false);
+            }}
+            heading="Error"
+            description={error?.response?.data?.message}
+          />
+        )}
       </div>
     </SharedModal>
   );

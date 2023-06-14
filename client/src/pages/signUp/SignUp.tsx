@@ -16,13 +16,18 @@ import { Paths } from "../../routes/path";
 import SharedModal from "../../components/sharedModal/SharedModal";
 import { useSignUpFormMutation } from "../../logic/reactQuery/mutation/useSignUpForm";
 import { useNavigate } from "react-router-dom";
-import SignUpSuccess from "../../components/sharedModal/components/signUpSuccess/SignUpSuccess";
+import ErrorModal from "../../components/sharedModal/components/errorModal/ErrorModal";
+import SuccessModal from "../../components/sharedModal/components/successModal/SuccessModal";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string()
     .min(8, "Password must be at least 8 characters")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z])/,
+      "Password must contain at least one uppercase letter, one lowercase letter, one number, and one symbol"
+    )
     .required("Password is required"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), undefined], "Passwords must match")
@@ -31,8 +36,9 @@ const validationSchema = Yup.object().shape({
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const { mutateAsync: createSignUpForm } = useSignUpFormMutation();
+  const { mutateAsync: createSignUpForm, error }: any = useSignUpFormMutation();
   const [isSignUpLoading, setIsSignUpLoading] = useState<boolean>(false);
+  const [isSignUpError, setIsSignUpError] = useState<boolean>(false);
   const [isSignUpSuccessOpen, setSignUpSuccessOpen] = useState<boolean>(false);
   const initialValues = {
     name: "",
@@ -42,7 +48,7 @@ const SignUp = () => {
     isAdmin: false,
   };
 
-  const handleSubmitForm = async (values: any) => {
+  const handleSubmitForm = async (values: any, { resetForm }: any) => {
     try {
       setIsSignUpLoading(true);
       setSignUpSuccessOpen(true);
@@ -52,6 +58,9 @@ const SignUp = () => {
       }
     } catch (e) {
       console.log(e);
+      setSignUpSuccessOpen(false);
+      setIsSignUpError(true);
+      resetForm();
     }
   };
 
@@ -132,7 +141,25 @@ const SignUp = () => {
           </Formik>
         </div>
       </SharedModal>
-      {isSignUpSuccessOpen && <SignUpSuccess isLoading={isSignUpLoading} />}
+
+      {isSignUpSuccessOpen && (
+        <SuccessModal
+          heading="Success"
+          description="Congratulations, your account has been successfully created"
+          isLoading={isSignUpLoading}
+          handleCloseModal={() => navigate(Paths.signIn)}
+        />
+      )}
+
+      {isSignUpError && (
+        <ErrorModal
+          handleCloseModal={() => {
+            setIsSignUpError(false);
+          }}
+          heading="Error"
+          description={error?.response?.data?.message}
+        />
+      )}
     </div>
   );
 };

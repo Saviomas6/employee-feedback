@@ -7,6 +7,8 @@ export const SharedModalMainContainer = styled.div<{ bgColor?: string }>`
   position: fixed;
   top: 0;
   left: 0;
+  padding: 0 10px;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;

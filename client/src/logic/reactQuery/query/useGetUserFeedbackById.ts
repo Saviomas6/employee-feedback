@@ -7,6 +7,7 @@ interface I_Props {
   department: string;
   comments: string;
   review: string;
+  anonymous: boolean;
 }
 const getUserFeedbackById = async (id: string | undefined) => {
   const { data } = await axiosInstance.get(

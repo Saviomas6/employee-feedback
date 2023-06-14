@@ -10,7 +10,7 @@ import VisionSection from "./components/visionSection/VisionSection";
 const HomeSection = () => {
   return (
     <OpacityAnimation>
-      <Container>
+      <Container width="90%">
         <Wrapper>
           <BannerSection />
           <EasyStepSection />
