@@ -6,17 +6,17 @@ interface I_Props {
   topicName: string;
   topicValue: string;
 }
-const getUserFeedbackTopic = async () => {
+const getUserFeedbackTopic = async (search: string) => {
   const { data } = await axiosInstance.get(
-    `${apiEndPoints?.userFeedbackTopic}`
+    `${apiEndPoints?.userFeedbackTopic}?search=${search}`
   );
   return data;
 };
 
-export const useGetUserFeedbackTopic = () => {
+export const useGetUserFeedbackTopic = (search: string) => {
   const { data, isError, isFetching, isLoading } = useQuery<I_Props[]>(
-    "userFeedbackTopic",
-    getUserFeedbackTopic,
+    ["userFeedbackTopic", search],
+    () => getUserFeedbackTopic(search),
     {
       refetchOnWindowFocus: false,
     }

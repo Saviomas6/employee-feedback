@@ -1,5 +1,4 @@
 import { styled } from "styled-components";
-import { effect } from "../../styles/sharedStyles";
 
 export const MainContainer = styled.div`
   display: grid;

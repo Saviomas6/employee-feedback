@@ -1,9 +1,7 @@
 import { useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Paths } from "./path";
-import Navbar from "../components/navbar/Navbar";
 import Home from "../pages/homeSection/HomeSection";
-import Footer from "../components/footer/Footer";
 import NotFound from "../components/notFound/NotFound";
 import UserEmployeeFeedback from "../pages/user/userEmployeeFeedback/UserEmployeeFeedback";
 import AdminEmployeeFeedback from "../pages/admin/adminEmployeeFeedback/AdminEmployeeFeedback";
@@ -23,7 +21,7 @@ import AdminAnnouncement from "../pages/admin/adminAnnouncement/AdminAnnouncemen
 import { useGetUserDetail } from "../logic/reactQuery/query/useUserDetails";
 import LoadingSpinner from "../components/loading/LoadingSpinner";
 import { setLoggedDetail, setLoggedIn } from "../logic/redux/action/action";
-import { OpacityAnimation } from "../styles/sharedStyles";
+import Layout from "../components/layout/Layout";
 
 export interface RouteDefinition {
   element: any;
@@ -139,6 +137,7 @@ export const routes: RouteDefinition[] = [
 ].concat(NotFoundRoute as any);
 
 const RoutePath = () => {
+  const location = useLocation();
   const dispatch = useAppDispatch();
   const { data, isLoading, isFetching } = useGetUserDetail();
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
@@ -200,11 +199,9 @@ const RoutePath = () => {
       {isLoading || isFetching ? (
         <LoadingSpinner />
       ) : (
-        <OpacityAnimation>
-          <Navbar />
+        <Layout>
           <Routes>{routes.map(mapRoutes)}</Routes>
-          <Footer />
-        </OpacityAnimation>
+        </Layout>
       )}
     </>
   );

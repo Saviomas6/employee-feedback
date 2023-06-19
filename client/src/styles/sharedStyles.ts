@@ -52,6 +52,7 @@ export const InputFieldWrapper = styled.div`
   height: 40px;
   width: 100%;
   margin: 10px 0;
+  position: relative;
 `;
 
 export const InputField = styled(Field)`
@@ -78,6 +79,9 @@ export const ModalButtonWrapper = styled.div`
 export const ModalHeading = styled.h2`
   color: #fff;
   text-align: center;
+  @media screen and (max-width: 480px) {
+    font-size: 18px;
+  }
 `;
 export const ModalDescription = styled.div`
   color: #fff;
@@ -170,6 +174,7 @@ export const CreateTopicButtonContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: end;
+  gap: 20px;
 `;
 
 export const AdminButtonWrapper = styled.div`
@@ -233,6 +238,8 @@ export const AnnouncementDescription = styled.div`
   }
   @media screen and (max-width: 480px) {
     font-size: 16px;
+    height: 200px;
+    overflow: auto;
   }
 `;
 
@@ -254,5 +261,51 @@ export const SignUpButton = styled.button<{
     font-size: 14px;
     height: 35px;
     width: 100px;
+  }
+`;
+
+export const PasswordHideUnHideContainer = styled.div`
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  display: flex;
+  cursor: pointer;
+`;
+
+export const SkeletonLoadingAnimation = () => keyframes`
+  0% {
+    background:#2b3641
+  }
+  100% {
+    background: #7A798A;
+  }
+`;
+
+export const LoadingSkeleton = styled.div`
+  width: 100%;
+  height: 240px;
+  border-radius: 20px;
+  animation: ${SkeletonLoadingAnimation} 1s linear infinite alternate !important;
+`;
+
+export const SearchInputFieldWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin: 20px 0;
+`;
+
+export const SearchInputField = styled.input`
+  height: 45px;
+  width: 300px;
+  outline: none;
+  border-radius: 10px;
+  border: none;
+  background-color: #fff;
+  color: #000;
+  font-size: 18px;
+  padding: 0 26px;
+  @media screen and (max-width: 480px) {
+    width: 100%;
   }
 `;

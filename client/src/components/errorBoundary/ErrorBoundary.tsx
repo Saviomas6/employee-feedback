@@ -9,6 +9,7 @@ import {
 import Button from "../button/Button";
 import errorBoundary from "../../assets/errorBoundary.json";
 import Lottie from "react-lottie";
+import { Container } from "../../styles/sharedStyles";
 interface Props {
   children?: ReactNode;
 }
@@ -41,18 +42,20 @@ class ErrorBoundary extends Component<Props, State> {
       },
     };
     return this.state.hasError ? (
-      <ErrorBoundaryContainer>
-        <ErrorBoundaryLogoContainer>
-          <ErrorBoundaryLogo>
-            <Lottie options={defaultErrorOptions} />
-          </ErrorBoundaryLogo>
-        </ErrorBoundaryLogoContainer>
-        <ErrorBoundaryHeading>Woops!</ErrorBoundaryHeading>
-        <ErrorBoundaryHeading>Something went wrong!</ErrorBoundaryHeading>
-        <ErrorBoundaryButtonWrapper>
-          <Button text="HOME" onClick={() => (window.location.href = "/")} />
-        </ErrorBoundaryButtonWrapper>
-      </ErrorBoundaryContainer>
+      <Container width="90%">
+        <ErrorBoundaryContainer>
+          <ErrorBoundaryLogoContainer>
+            <ErrorBoundaryLogo>
+              <Lottie options={defaultErrorOptions} />
+            </ErrorBoundaryLogo>
+          </ErrorBoundaryLogoContainer>
+          <ErrorBoundaryHeading>Woops!</ErrorBoundaryHeading>
+          <ErrorBoundaryHeading>Something went wrong!</ErrorBoundaryHeading>
+          <ErrorBoundaryButtonWrapper>
+            <Button text="HOME" onClick={() => (window.location.href = "/")} />
+          </ErrorBoundaryButtonWrapper>
+        </ErrorBoundaryContainer>
+      </Container>
     ) : (
       this.props.children
     );

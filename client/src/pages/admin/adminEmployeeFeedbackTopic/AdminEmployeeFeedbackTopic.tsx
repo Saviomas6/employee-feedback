@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import {
   AdminButtonWrapper,
   Container,
@@ -7,20 +7,22 @@ import {
   FeedbackTopicContainer,
   FeedbackTopicLayout,
   FeedbackTopicText,
+  LoadingSkeleton,
   OpacityAnimation,
+  SearchInputField,
   Wrapper,
 } from "../../../styles/sharedStyles";
 import Button from "../../../components/button/Button";
 import CreateTopicModal from "../../../components/sharedModal/components/createTopicModal/CreateTopicModal";
 import SuccessModal from "../../../components/sharedModal/components/successModal/SuccessModal";
 import { useGetUserFeedbackTopic } from "../../../logic/reactQuery/query/useGetUserFeedBackTopic";
-import LoadingSpinner from "../../../components/loading/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
 import { useDeleteFeedbackTopic } from "../../../logic/reactQuery/mutation/useDeleteFeedbackTopic";
 import EmptyFound from "../../../components/emptyFound/EmptyFound";
 import ConfirmDelete from "../../../components/sharedModal/components/confirmDelete/ConfirmDelete";
 import { useAppSelector } from "../../../logic/redux/store/hooks";
 import { Paths } from "../../../routes/path";
+import { debounce } from "../../../utils/utils";
 
 const AdminEmployeeFeedbackTopic = () => {
   const navigate = useNavigate();
@@ -37,7 +39,11 @@ const AdminEmployeeFeedbackTopic = () => {
     useState<boolean>(false);
   const [isEditTopicName, setEditTopicName] = useState<string | undefined>("");
   const [isEditTopicId, setEditTopicId] = useState<string | undefined>("");
-  const { data, isError, isFetching, isLoading } = useGetUserFeedbackTopic();
+  const [searchValue, setSearchValue] = useState<string>("");
+
+  const { data, isError, isFetching, isLoading } = useGetUserFeedbackTopic(
+    searchValue || ""
+  );
   const { mutateAsync } = useDeleteFeedbackTopic();
   const isLoggedDetail = useAppSelector(
     (state) => state.userReducer.isLoggedDetail
@@ -59,10 +65,21 @@ const AdminEmployeeFeedbackTopic = () => {
     }
   }, [isLoggedDetail]);
 
+  const handleChange = (e: any) => {
+    setSearchValue(e.target.value);
+  };
+
+  const handleDebounce = debounce((e: any) => handleChange(e), 1000);
+
   return (
     <Container width="90%">
       <Wrapper>
         <CreateTopicButtonContainer>
+          <SearchInputField
+            type="text"
+            placeholder="Search"
+            onChange={handleDebounce}
+          />
           <Button text="Create" onClick={() => setCreateTopicModalOpen(true)} />
         </CreateTopicButtonContainer>
         <FeedbackTopicLayout dataLength={data?.length === 0}>
@@ -111,8 +128,14 @@ const AdminEmployeeFeedbackTopic = () => {
                 </FeedbackTopicContainer>
               </OpacityAnimation>
             ))}
+          {isLoading &&
+            Array.from({ length: 12 }, (_x, v) => (
+              <Fragment key={v}>
+                <LoadingSkeleton />
+              </Fragment>
+            ))}
         </FeedbackTopicLayout>
-        {isLoading && <LoadingSpinner />}
+
         {!isLoading && !isError && !isFetching && data?.length === 0 && (
           <EmptyFound
             heading="No Feedback Found!"

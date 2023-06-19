@@ -11,6 +11,10 @@ export const ErrorBoundaryLogoContainer = styled.div`
 export const ErrorBoundaryLogo = styled.div`
   height: 350px;
   width: 350px;
+  @media screen and (max-width: 480px) {
+    height: 230px;
+    width: 230px;
+  }
 `;
 
 export const ErrorBoundaryHeading = styled.div`
@@ -19,6 +23,9 @@ export const ErrorBoundaryHeading = styled.div`
   color: #fff;
   text-align: center;
   margin-bottom: 8px;
+  @media screen and (max-width: 480px) {
+    font-size: 24px;
+  }
 `;
 
 export const ErrorBoundaryButtonWrapper = styled.div`

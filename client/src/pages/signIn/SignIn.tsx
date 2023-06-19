@@ -7,6 +7,7 @@ import {
   InputLabel,
   ModalButtonWrapper,
   ModalHeading,
+  PasswordHideUnHideContainer,
   StyledLink,
 } from "../../styles/sharedStyles";
 import { Formik, Form, ErrorMessage } from "formik";
@@ -20,6 +21,7 @@ import SharedModal from "../../components/sharedModal/SharedModal";
 import { useNavigate } from "react-router-dom";
 import { Paths } from "../../routes/path";
 import ErrorModal from "../../components/sharedModal/components/errorModal/ErrorModal";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -32,6 +34,8 @@ const SignIn = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [isSignInError, setIsSignInError] = useState<boolean>(false);
+  const [isPasswordHide, setPasswordHide] = useState<boolean>(false);
+
   const {
     mutateAsync: createSignInForm,
     isLoading,
@@ -53,8 +57,9 @@ const SignIn = () => {
         dispatch(
           setLoggedDetail([
             {
-              name: decoded?.decodedToken?.name,
-              email: decoded?.decodedToken?.email,
+              name: result?.data?.user?.name,
+              email: result?.data?.user?.email,
+              isAdmin: result?.data?.user?.isAdmin,
             },
           ])
         );
@@ -95,11 +100,20 @@ const SignIn = () => {
             <InputLabel htmlFor="password">Password</InputLabel>
             <InputFieldWrapper>
               <InputField
-                type="password"
+                type={isPasswordHide ? "text" : "password"}
                 placeholder="Password"
                 id="password"
                 name="password"
               />
+              <PasswordHideUnHideContainer
+                onClick={() => setPasswordHide(!isPasswordHide)}
+              >
+                {isPasswordHide ? (
+                  <AiFillEye color="#000" size={25} />
+                ) : (
+                  <AiFillEyeInvisible color="#000" size={25} />
+                )}
+              </PasswordHideUnHideContainer>
             </InputFieldWrapper>
             <ErrorMessageText>
               <ErrorMessage name="password" />

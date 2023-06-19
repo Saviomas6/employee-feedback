@@ -6,12 +6,13 @@ import {
   FeedbackTopicContainer,
   FeedbackTopicLayout,
   FeedbackTopicText,
+  LoadingSkeleton,
   OpacityAnimation,
+  SearchInputField,
   Wrapper,
 } from "../../../styles/sharedStyles";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import Button from "../../../components/button/Button";
-import LoadingSpinner from "../../../components/loading/LoadingSpinner";
 import SuccessModal from "../../../components/sharedModal/components/successModal/SuccessModal";
 import CreateAnnouncement from "../../../components/sharedModal/components/createAnnouncement/CreateAnnouncement";
 import { useGetUserAnnouncement } from "../../../logic/reactQuery/query/useGetAnnouncement";
@@ -19,6 +20,7 @@ import { useDeleteAnnouncement } from "../../../logic/reactQuery/mutation/useDel
 import ConfirmDelete from "../../../components/sharedModal/components/confirmDelete/ConfirmDelete";
 import EmptyFound from "../../../components/emptyFound/EmptyFound";
 import { useNavigate } from "react-router-dom";
+import { debounce } from "../../../utils/utils";
 
 const AdminAnnouncementTopic = () => {
   const navigate = useNavigate();
@@ -37,8 +39,10 @@ const AdminAnnouncementTopic = () => {
   const [isEditAnnouncementId, setEditAnnouncementId] = useState<
     string | undefined
   >("");
-
-  const { data, isLoading, isError, isFetching } = useGetUserAnnouncement();
+  const [searchValue, setSearchValue] = useState<string>("");
+  const { data, isLoading, isError, isFetching } = useGetUserAnnouncement(
+    searchValue || ""
+  );
   const { mutateAsync } = useDeleteAnnouncement();
 
   const handleDeleteTopic = async (e: any) => {
@@ -52,10 +56,21 @@ const AdminAnnouncementTopic = () => {
     }
   };
 
+  const handleChange = (e: any) => {
+    setSearchValue(e.target.value);
+  };
+
+  const handleDebounce = debounce((e: any) => handleChange(e), 1000);
+
   return (
     <Container width="90%">
       <Wrapper>
         <CreateTopicButtonContainer>
+          <SearchInputField
+            type="text"
+            placeholder="Search"
+            onChange={handleDebounce}
+          />
           <Button
             text="Create"
             onClick={() => setCreateAnnouncementModalOpen(true)}
@@ -103,8 +118,14 @@ const AdminAnnouncementTopic = () => {
               </FeedbackTopicContainer>
             </OpacityAnimation>
           ))}
+          {isLoading &&
+            Array.from({ length: 12 }, (_x, v) => (
+              <Fragment key={v}>
+                <LoadingSkeleton />
+              </Fragment>
+            ))}
         </FeedbackTopicLayout>
-        {isLoading && <LoadingSpinner />}
+
         {!isLoading && !isError && !isFetching && data?.length === 0 && (
           <EmptyFound
             heading="No Announcement Found!"

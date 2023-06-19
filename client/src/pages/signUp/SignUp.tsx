@@ -9,6 +9,7 @@ import {
   InputLabel,
   ModalButtonWrapper,
   ModalHeading,
+  PasswordHideUnHideContainer,
   StyledLink,
 } from "../../styles/sharedStyles";
 import Button from "../../components/button/Button";
@@ -18,6 +19,7 @@ import { useSignUpFormMutation } from "../../logic/reactQuery/mutation/useSignUp
 import { useNavigate } from "react-router-dom";
 import ErrorModal from "../../components/sharedModal/components/errorModal/ErrorModal";
 import SuccessModal from "../../components/sharedModal/components/successModal/SuccessModal";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -40,6 +42,10 @@ const SignUp = () => {
   const [isSignUpLoading, setIsSignUpLoading] = useState<boolean>(false);
   const [isSignUpError, setIsSignUpError] = useState<boolean>(false);
   const [isSignUpSuccessOpen, setSignUpSuccessOpen] = useState<boolean>(false);
+  const [isPasswordHide, setPasswordHide] = useState<boolean>(false);
+  const [isConfirmPasswordHide, setConfirmPasswordHide] =
+    useState<boolean>(false);
+
   const initialValues = {
     name: "",
     email: "",
@@ -105,11 +111,20 @@ const SignUp = () => {
               <InputLabel htmlFor="password">Password</InputLabel>
               <InputFieldWrapper>
                 <InputField
-                  type="password"
+                  type={isPasswordHide ? "text" : "password"}
                   placeholder="Password"
                   id="password"
                   name="password"
                 />
+                <PasswordHideUnHideContainer
+                  onClick={() => setPasswordHide(!isPasswordHide)}
+                >
+                  {isPasswordHide ? (
+                    <AiFillEye color="#000" size={25} />
+                  ) : (
+                    <AiFillEyeInvisible color="#000" size={25} />
+                  )}
+                </PasswordHideUnHideContainer>
               </InputFieldWrapper>
               <ErrorMessageText>
                 <ErrorMessage name="password" />
@@ -119,11 +134,20 @@ const SignUp = () => {
               </InputLabel>
               <InputFieldWrapper>
                 <InputField
-                  type="password"
+                  type={isConfirmPasswordHide ? "text" : "password"}
                   placeholder="Confirm password"
                   id="confirmPassword"
                   name="confirmPassword"
                 />
+                <PasswordHideUnHideContainer
+                  onClick={() => setConfirmPasswordHide(!isConfirmPasswordHide)}
+                >
+                  {isConfirmPasswordHide ? (
+                    <AiFillEye color="#000" size={25} />
+                  ) : (
+                    <AiFillEyeInvisible color="#000" size={25} />
+                  )}
+                </PasswordHideUnHideContainer>
               </InputFieldWrapper>
               <ErrorMessageText>
                 <ErrorMessage name="confirmPassword" />

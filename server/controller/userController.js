@@ -164,7 +164,11 @@ export const userFeedbackTopic = async (req, res) => {
 
 export const getUserFeedbackTopic = async (req, res) => {
   try {
-    const userFeedbackTopic = await UserFeedbackTopicForm.find({}, { __v: 0 });
+    const searchQuery = req.query.search;
+    const userFeedbackTopic = await UserFeedbackTopicForm.find(
+      searchQuery ? { topicName: { $regex: searchQuery, $options: "i" } } : {},
+      { __v: 0 }
+    );
     res.send(userFeedbackTopic);
   } catch (e) {
     console.log(e);
@@ -230,7 +234,14 @@ export const userAnnouncement = async (req, res) => {
 
 export const getUserAnnouncement = async (req, res) => {
   try {
-    const userAnnouncement = await UserAnnouncementForm.find({}, { __v: 0 });
+    const searchQuery = req.query.search;
+    const userAnnouncement = await UserAnnouncementForm.find(
+      searchQuery
+        ? { announcementHeading: { $regex: searchQuery, $options: "i" } }
+        : {},
+      { __v: 0 }
+    );
+
     res.send(userAnnouncement);
   } catch (e) {
     console.log(e);

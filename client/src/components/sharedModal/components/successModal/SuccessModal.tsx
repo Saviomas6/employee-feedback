@@ -1,10 +1,8 @@
 import SharedModal from "../../SharedModal";
 import {
-  ModalButtonWrapper,
   ModalDescription,
   ModalHeading,
 } from "../../../../styles/sharedStyles";
-import Button from "../../../button/Button";
 import MiniLoader from "../../../miniLoader/MiniLoader";
 import success from "../../../../assets/success.json";
 import Lottie from "react-lottie";

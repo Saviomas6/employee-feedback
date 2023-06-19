@@ -8,15 +8,17 @@ interface I_Props {
   announcementSummary: string;
   _id: string;
 }
-const getUserAnnouncement = async () => {
-  const { data } = await axiosInstance.get(`${apiEndPoints?.userAnnouncement}`);
+const getUserAnnouncement = async (search: string) => {
+  const { data } = await axiosInstance.get(
+    `${apiEndPoints?.userAnnouncement}?search=${search}`
+  );
   return data;
 };
 
-export const useGetUserAnnouncement = () => {
+export const useGetUserAnnouncement = (search: string) => {
   const { data, isError, isFetching, isLoading } = useQuery<I_Props[]>(
-    "getUserAnnouncement",
-    getUserAnnouncement,
+    ["getUserAnnouncement", search],
+    () => getUserAnnouncement(search),
     {
       refetchOnWindowFocus: false,
     }
