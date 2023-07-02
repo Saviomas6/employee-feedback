@@ -82,7 +82,20 @@ const Navbar = () => {
                 <Styled.ProfilePicContainer
                   onClick={() => setLogoutModalOpen(true)}
                 >
-                  <RxAvatar size="30" color="#fff" />
+                  {isLoggedDetail[0]?.profileImage ? (
+                    <img
+                      src={isLoggedDetail[0]?.profileImage}
+                      alt="img"
+                      style={{
+                        borderRadius: "100%",
+                        objectFit: "cover",
+                        height: "100%",
+                        width: "100%",
+                      }}
+                    />
+                  ) : (
+                    <RxAvatar size="30" color="#fff" />
+                  )}
                 </Styled.ProfilePicContainer>
               ) : (
                 <>

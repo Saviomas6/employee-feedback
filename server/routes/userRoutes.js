@@ -21,6 +21,7 @@ import {
   userSignIn,
   userSignUp,
 } from "../controller/userController.js";
+import { authenticateToken } from "../authentication/authenticate.js";
 
 //home
 userRouter.get("/", homeRoute);
@@ -53,7 +54,7 @@ userRouter.get("/user-feedback/:id", getUserFeedback);
 userRouter.post("/user-feedback-topic", userFeedbackTopic);
 
 //get-user-feedback-topic
-userRouter.get("/user-feedback-topic", getUserFeedbackTopic);
+userRouter.get("/user-feedback-topic",authenticateToken, getUserFeedbackTopic);
 
 //put-user-feedback-topic
 userRouter.put("/user-feedback-topic", updateUserFeedbackTopic);

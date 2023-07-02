@@ -22,6 +22,7 @@ import { useGetUserDetail } from "../logic/reactQuery/query/useUserDetails";
 import LoadingSpinner from "../components/loading/LoadingSpinner";
 import { setLoggedDetail, setLoggedIn } from "../logic/redux/action/action";
 import Layout from "../components/layout/Layout";
+import axios from "axios";
 
 export interface RouteDefinition {
   element: any;
@@ -193,6 +194,42 @@ const RoutePath = () => {
       }
     }
   }, [location, data]);
+
+  const handleLoginData = async () => {
+    const tokenData = localStorage.getItem("token");
+    try {
+      if (tokenData) {
+        const result = await axios.get(
+          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${tokenData}`,
+          {
+            headers: {
+              Authorization: `Bearer ${tokenData}`,
+              Accept: "application/json",
+            },
+          }
+        );
+        console.log(result);
+        
+        dispatch(setLoggedIn(true));
+        dispatch(
+          setLoggedDetail([
+            {
+              name: result?.data?.name,
+              email: result?.data?.email,
+              isAdmin: false,
+              profileImage: result?.data?.picture,
+            },
+          ])
+        );
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    handleLoginData();
+  }, [isLoggedIn]);
 
   return (
     <>

@@ -73,6 +73,7 @@ const SignUp = () => {
   const handleModalClose = () => {
     navigate(Paths.home);
   };
+  
   return (
     <div>
       <SharedModal onClickClose={handleModalClose}>

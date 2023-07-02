@@ -19,6 +19,7 @@ export const AvatarProfile = styled.div`
   align-items: center;
   justify-content: center;
   background-color: #ff008e;
+  padding: 3px;
   @media screen and (max-width: 480px) {
     height: 60px;
     width: 60px;

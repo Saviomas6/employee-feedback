@@ -87,6 +87,7 @@ export const ProfilePicContainer = styled.div`
   justify-content: center;
   box-sizing: border-box;
   cursor: pointer;
+  padding: 3px;
   background-color: #ff008e;
   @media screen and (max-width: 1024px) {
     height: 38px;

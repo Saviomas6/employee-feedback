@@ -32,8 +32,10 @@ const SideBar = ({ isSideBarOpen, setSideBarOpen }: I_Props) => {
   return (
     <Styled.SideBarMainContainer isSideBarOpen={isSideBarOpen}>
       <Styled.SideBarContainer>
+
         <Styled.SideBarLogoContainer>
           <Styled.SideBarLogoIconContainer>
+            
             <Styled.SideBarLogoIcon>
               <img src={rapid} alt="rapid" />
             </Styled.SideBarLogoIcon>

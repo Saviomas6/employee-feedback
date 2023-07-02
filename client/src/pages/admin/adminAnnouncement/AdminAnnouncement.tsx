@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Container,
   OpacityAnimation,
@@ -12,11 +12,24 @@ import {
   AnnouncementHeadingContainer,
 } from "../../../styles/sharedStyles";
 import LoadingSpinner from "../../../components/loading/LoadingSpinner";
-
+import { Paths } from "../../../routes/path";
+import {useEffect} from "react"
+import { useAppSelector } from "../../../logic/redux/store/hooks";
 const AdminAnnouncement = () => {
+  const navigate=useNavigate()
   const { id } = useParams();
   const { data, isLoading, isFetching, isError }: any =
     useGetUserAnnouncementById(id);
+    const isLoggedDetail = useAppSelector(
+      (state) => state.userReducer.isLoggedDetail
+    );
+
+
+    useEffect(() => {
+      if (!isLoggedDetail[0]?.isAdmin) {
+        navigate(Paths.home);
+      }
+    }, [isLoggedDetail]);
 
   return (
     <Container width="90%">

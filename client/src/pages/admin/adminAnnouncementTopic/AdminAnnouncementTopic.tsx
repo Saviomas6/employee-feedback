@@ -11,7 +11,7 @@ import {
   SearchInputField,
   Wrapper,
 } from "../../../styles/sharedStyles";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Button from "../../../components/button/Button";
 import SuccessModal from "../../../components/sharedModal/components/successModal/SuccessModal";
 import CreateAnnouncement from "../../../components/sharedModal/components/createAnnouncement/CreateAnnouncement";
@@ -21,6 +21,8 @@ import ConfirmDelete from "../../../components/sharedModal/components/confirmDel
 import EmptyFound from "../../../components/emptyFound/EmptyFound";
 import { useNavigate } from "react-router-dom";
 import { debounce } from "../../../utils/utils";
+import { Paths } from "../../../routes/path";
+import { useAppSelector } from "../../../logic/redux/store/hooks";
 
 const AdminAnnouncementTopic = () => {
   const navigate = useNavigate();
@@ -44,7 +46,9 @@ const AdminAnnouncementTopic = () => {
     searchValue || ""
   );
   const { mutateAsync } = useDeleteAnnouncement();
-
+  const isLoggedDetail = useAppSelector(
+    (state) => state.userReducer.isLoggedDetail
+  );
   const handleDeleteTopic = async (e: any) => {
     const dataValues = {
       id: isEditAnnouncementId,
@@ -61,6 +65,12 @@ const AdminAnnouncementTopic = () => {
   };
 
   const handleDebounce = debounce((e: any) => handleChange(e), 1000);
+
+  useEffect(() => {
+    if (!isLoggedDetail[0]?.isAdmin) {
+      navigate(Paths.home);
+    }
+  }, [isLoggedDetail]);
 
   return (
     <Container width="90%">

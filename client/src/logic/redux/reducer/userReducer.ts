@@ -5,6 +5,7 @@ interface I_Props {
   name: string;
   email: string;
   isAdmin?: boolean;
+  profileImage?: string;
 }
 
 interface I_InitialStateProps {
